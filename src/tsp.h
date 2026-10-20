@@ -4,8 +4,8 @@
  * entre paradas se puede pasar por centrales intermedias.
  * Responsable: integrante 1; Tecnicas: Floyd-Warshall para los caminos,
  * Held-Karp (exacto) y vecino mas cercano (aproximado).
- * Autores: Nombre Apellido (A00843290), Nombre Apellido (A0XXXXXXX),
- *          Nombre Apellido (A0XXXXXXX), Nombre Apellido (A0XXXXXXX)
+ * Autores: Carlos Emiliano Nava Flores, Luis Enrique Castillo Carrillo,
+ *          Desiderio Iván Ortegón Mortón, Fernando Robles Vidrio
  * Fecha de creacion: 20/10/2026
  */
 

@@ -4,8 +4,8 @@
  * capacidades de los enlaces (no las demandas).
  * Responsable: integrante 2; Tecnicas: Edmonds-Karp (principal) y
  * Ford-Fulkerson con DFS.
- * Autores: Nombre Apellido (A00843290), Nombre Apellido (A0XXXXXXX),
- *          Nombre Apellido (A0XXXXXXX), Nombre Apellido (A0XXXXXXX)
+ * Autores: Carlos Emiliano Nava Flores, Luis Enrique Castillo Carrillo,
+ *          Desiderio Iván Ortegón Mortón, Fernando Robles Vidrio
  * Fecha de creacion: 20/10/2026
  */
 

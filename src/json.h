@@ -2,8 +2,8 @@
  * Descripcion: lectura y escritura de JSON para el contrato del autograder.
  * El ejecutable recibe un objeto JSON por la entrada estandar y responde
  * otro objeto JSON por la salida estandar; este archivo hace esa conversion.
- * Autores: Nombre Apellido (A00843290), Nombre Apellido (A0XXXXXXX),
- *          Nombre Apellido (A0XXXXXXX), Nombre Apellido (A0XXXXXXX)
+ * Autores: Carlos Emiliano Nava Flores, Luis Enrique Castillo Carrillo,
+ *          Desiderio Iván Ortegón Mortón, Fernando Robles Vidrio
  * Fecha de creacion: 20/10/2026
  */
 

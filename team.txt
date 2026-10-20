@@ -1,13 +1,13 @@
 Equipo: Sentinela del Norte · TC2038
 
-Integrante 1: Nombre Apellido (A0XXXXXXX)
+Integrante 1: Carlos Emiliano Nava Flores
 Contribuciones: MST y TSP (caminos mas cortos, Held-Karp, vecino mas cercano).
 
-Integrante 2: Nombre Apellido (A0XXXXXXX)
+Integrante 2: Luis Enrique Castillo Carrillo
 Contribuciones: Flujo maximo y diagramas de Voronoi.
 
-Integrante 3: Nombre Apellido (A0XXXXXXX)
+Integrante 3: Desiderio Iván Ortegón Mortón
 Contribuciones: Deteccion de firmas, palindromo mas largo y subcadena comun.
 
-Integrante 4: Nombre Apellido (A0XXXXXXX)
+Integrante 4: Fernando Robles Vidrio
 Contribuciones: Lector JSON, main.cpp, aplicacion, pruebas automatizadas y benchmarks.

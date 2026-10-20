@@ -3,8 +3,8 @@
  * Descripcion: lee UN objeto JSON de la entrada estandar con la forma
  * {"mode": "...", "input": {...}}, lo envia al modulo del desafio indicado
  * y escribe UN objeto JSON con la respuesta en la salida estandar.
- * Autores: Nombre Apellido (A00843290), Nombre Apellido (A0XXXXXXX),
- *          Nombre Apellido (A0XXXXXXX), Nombre Apellido (A0XXXXXXX)
+ * Autores: Carlos Emiliano Nava Flores, Luis Enrique Castillo Carrillo,
+ *          Desiderio Iván Ortegón Mortón, Fernando Robles Vidrio
  * Fecha de creacion: 20/10/2026
  */
 

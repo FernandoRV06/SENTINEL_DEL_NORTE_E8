@@ -3,8 +3,8 @@
  * Busca tres firmas en dos transmisiones y reporta la primera posicion
  * de cada coincidencia, contando desde la posicion uno.
  * Responsable: integrante 3; Tecnicas: KMP (principal) y busqueda ingenua.
- * Autores: Nombre Apellido (A00843290), Nombre Apellido (A0XXXXXXX),
- *          Nombre Apellido (A0XXXXXXX), Nombre Apellido (A0XXXXXXX)
+ * Autores: Carlos Emiliano Nava Flores, Luis Enrique Castillo Carrillo,
+ *          Desiderio Iván Ortegón Mortón, Fernando Robles Vidrio
  * Fecha de creacion: 20/10/2026
  */
 
