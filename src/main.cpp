@@ -3,19 +3,24 @@
  * Descripcion: lee UN objeto JSON de la entrada estandar con la forma
  * {"mode": "...", "input": {...}}, lo envia al modulo del desafio indicado
  * y escribe UN objeto JSON con la respuesta en la salida estandar.
- * Autores: Carlos Emiliano Nava Flores, Luis Enrique Castillo Carrillo,
- *          Desiderio Iván Ortegón Mortón, Fernando Robles Vidrio
+ * Usa la libreria externa nlohmann/json (licencia MIT) para leer y escribir JSON.
+ * Autores: Carlos Emiliano Nava Flores (A0XXXXXXX),
+ *          Luis Enrique Castillo Carrillo (A0XXXXXXX),
+ *          Desiderio Ivan Ortegon Morton (A0XXXXXXX),
+ *          Fernando Robles Vidrio (A00843290)
  * Fecha de creacion: 20/10/2026
  */
 
 #include <exception>
 #include <iostream>
 #include <iterator>
+#include <stdexcept>
 #include <string>
+
+#include "json.hpp"
 
 #include "firmas.h"
 #include "flujoMaximo.h"
-#include "json.h"
 #include "mst.h"
 #include "palindromo.h"
 #include "subcadenaComun.h"
@@ -48,8 +53,8 @@ std::string leerEntradaCompleta() {
  *   entrada: campo "input" de la peticion.
  * Retorno: la respuesta del modulo; lanza una excepcion si el modo no existe.
  */
-ValorJson despacharModo(const std::string &modo, const ValorJson &entrada) {
-	ValorJson respuesta;
+Json despacharModo(const std::string &modo, const Json &entrada) {
+	Json respuesta;
 	if (modo == MODO_MST) {
 		respuesta = resolverMst(entrada);
 	} else if (modo == MODO_TSP) {
@@ -71,32 +76,19 @@ ValorJson despacharModo(const std::string &modo, const ValorJson &entrada) {
 }
 
 /*
- * Crea la respuesta que se envia cuando la peticion no se puede atender.
- * Parametros:
- *   mensaje: descripcion del problema encontrado.
- * Retorno: objeto JSON con el campo "error".
- */
-ValorJson crearRespuestaError(const std::string &mensaje) {
-	ValorJson respuesta = crearObjeto();
-	respuesta.agregarCampo("error", crearTexto(mensaje));
-	return respuesta;
-}
-
-/*
  * Punto de entrada: lee la peticion, la resuelve y escribe la respuesta.
  * Parametros: ninguno.
  * Retorno: 0 al terminar, aun si la peticion tuvo errores (se reportan en JSON).
  */
 int main() {
-	ValorJson respuesta;
+	Json respuesta;
 	try {
-		LectorJson lector;
-		ValorJson peticion = lector.leerDocumento(leerEntradaCompleta());
-		std::string modo = peticion.obtenerCampo("mode").texto;
-		respuesta = despacharModo(modo, peticion.obtenerCampo("input"));
+		Json peticion = Json::parse(leerEntradaCompleta());
+		std::string modo = peticion.at("mode").get<std::string>();
+		respuesta = despacharModo(modo, peticion.at("input"));
 	} catch (const std::exception &error) {
-		respuesta = crearRespuestaError(error.what());
+		respuesta = {{"error", error.what()}};
 	}
-	std::cout << escribirJson(respuesta) << "\n";
+	std::cout << respuesta.dump() << "\n";
 	return 0;
 }

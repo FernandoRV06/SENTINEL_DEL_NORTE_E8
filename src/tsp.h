@@ -4,15 +4,19 @@
  * entre paradas se puede pasar por centrales intermedias.
  * Responsable: integrante 1; Tecnicas: Floyd-Warshall para los caminos,
  * Held-Karp (exacto) y vecino mas cercano (aproximado).
- * Autores: Carlos Emiliano Nava Flores, Luis Enrique Castillo Carrillo,
- *          Desiderio Iván Ortegón Mortón, Fernando Robles Vidrio
+ * Autores: Carlos Emiliano Nava Flores (A0XXXXXXX),
+ *          Luis Enrique Castillo Carrillo (A0XXXXXXX),
+ *          Desiderio Ivan Ortegon Morton (A0XXXXXXX),
+ *          Fernando Robles Vidrio (A00843290)
  * Fecha de creacion: 20/10/2026
  */
 
 #ifndef TSP_H
 #define TSP_H
 
-#include "json.h"
+#include "json.hpp"
+
+using Json = nlohmann::json;
 
 /*
  * Atiende el modo "tsp". Version provisional: solo confirma que recibio
@@ -21,10 +25,8 @@
  *   entrada: campo "input" de la peticion.
  * Retorno: objeto JSON con la respuesta del modo.
  */
-inline ValorJson resolverTsp(const ValorJson &entrada) {
-	ValorJson respuesta = crearObjeto();
-	respuesta.agregarCampo("estado", crearTexto("pendiente"));
-	respuesta.agregarCampo("camposRecibidos", crearNumero(static_cast<double>(entrada.llaves.size())));
+inline Json resolverTsp(const Json &entrada) {
+	Json respuesta = {{"estado", "pendiente"}, {"camposRecibidos", entrada.size()}};
 	return respuesta;
 }
 

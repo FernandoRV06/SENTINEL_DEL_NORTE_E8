@@ -3,15 +3,20 @@
  * Busca tres firmas en dos transmisiones y reporta la primera posicion
  * de cada coincidencia, contando desde la posicion uno.
  * Responsable: integrante 3; Tecnicas: KMP (principal) y busqueda ingenua.
- * Autores: Carlos Emiliano Nava Flores, Luis Enrique Castillo Carrillo,
- *          Desiderio Iván Ortegón Mortón, Fernando Robles Vidrio
+ * Autores: Carlos Emiliano Nava Flores (A0XXXXXXX),
+ *          Luis Enrique Castillo Carrillo (A0XXXXXXX),
+ *          Desiderio Ivan Ortegon Morton (A0XXXXXXX),
+ *          Fernando Robles Vidrio (A00843290)
  * Fecha de creacion: 20/10/2026
  */
 
 #ifndef FIRMAS_H
 #define FIRMAS_H
 
-#include "json.h"
+#include "json.hpp"
+
+using Json = nlohmann::json;
+
 #include "transmision.h"
 
 /*
@@ -21,10 +26,8 @@
  *   entrada: campo "input" de la peticion.
  * Retorno: objeto JSON con la respuesta del modo.
  */
-inline ValorJson resolverFirmas(const ValorJson &entrada) {
-	ValorJson respuesta = crearObjeto();
-	respuesta.agregarCampo("estado", crearTexto("pendiente"));
-	respuesta.agregarCampo("camposRecibidos", crearNumero(static_cast<double>(entrada.llaves.size())));
+inline Json resolverFirmas(const Json &entrada) {
+	Json respuesta = {{"estado", "pendiente"}, {"camposRecibidos", entrada.size()}};
 	return respuesta;
 }
 
