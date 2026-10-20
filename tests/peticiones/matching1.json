@@ -1,0 +1,1 @@
+{"mode": "matching", "input": {"transmissions": ["AAABCDFFF", "001234ABCDEF"], "patterns": ["ABCD", "1234", "FFFF"]}}

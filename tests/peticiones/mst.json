@@ -1,0 +1,1 @@
+{"mode": "mst", "input": {"nodes": [0, 1, 2, 3], "edges": [{"u": 0, "v": 1, "weight": 1}, {"u": 1, "v": 2, "weight": 2}, {"u": 2, "v": 3, "weight": 1}, {"u": 0, "v": 3, "weight": 4}, {"u": 0, "v": 2, "weight": 3}]}}

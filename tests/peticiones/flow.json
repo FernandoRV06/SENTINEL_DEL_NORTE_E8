@@ -1,0 +1,1 @@
+{"mode": "flow", "input": {"n": 4, "edges": [{"u": 0, "v": 1, "capacity": 3}, {"u": 0, "v": 2, "capacity": 2}, {"u": 1, "v": 2, "capacity": 1}, {"u": 1, "v": 3, "capacity": 2}, {"u": 2, "v": 3, "capacity": 3}], "source": 0, "sink": 3}}

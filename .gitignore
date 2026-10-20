@@ -1,0 +1,14 @@
+# Ejecutables compilados (cada quien compila en su computadora)
+sentinel
+sentinel.exe
+*.o
+*.out
+
+# Archivos del sistema y de editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# El ZIP de entrega se arma al final, no se guarda en el repositorio
+*.zip

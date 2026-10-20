@@ -1,0 +1,13 @@
+Equipo: Sentinela del Norte · TC2038
+
+Integrante 1: Nombre Apellido (A0XXXXXXX)
+Contribuciones: MST y TSP (caminos mas cortos, Held-Karp, vecino mas cercano).
+
+Integrante 2: Nombre Apellido (A0XXXXXXX)
+Contribuciones: Flujo maximo y diagramas de Voronoi.
+
+Integrante 3: Nombre Apellido (A0XXXXXXX)
+Contribuciones: Deteccion de firmas, palindromo mas largo y subcadena comun.
+
+Integrante 4: Nombre Apellido (A0XXXXXXX)
+Contribuciones: Lector JSON, main.cpp, aplicacion, pruebas automatizadas y benchmarks.
