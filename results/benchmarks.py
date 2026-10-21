@@ -221,7 +221,7 @@ def main():
 				fila["exponente"] = round(math.log(fila["segundos"] / anterior["segundos"]) / math.log(fila["n"] / anterior["n"]), 2)
 	columnas = ["modo", "escenario", "tecnica", "n", "m", "segundos", "memoria_mb", "exponente", "teoria", "coincide", "resultado"]
 	with open(os.path.join(CARPETA, "benchmarks.csv"), "w", newline="") as archivo:
-		escritor = csv.DictWriter(archivo, fieldnames=columnas)
+		escritor = csv.DictWriter(archivo, fieldnames=columnas, lineterminator="\n")
 		escritor.writeheader()
 		escritor.writerows(filas)
 	entorno = describirEntorno()
