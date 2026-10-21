@@ -1,6 +1,9 @@
 /*
  * Descripcion: desafio 01 · Optimal Network Deployment (arbol de expansion minima).
  * Conecta todas las centrales al menor costo de instalacion.
+ * Usa Kruskal: ordena las aristas por peso y agrega cada una si une dos
+ * componentes distintas (conjuntos disjuntos con compresion de caminos y
+ * union por rango). Tiempo O(E log E), memoria O(V + E).
  * Autores: Carlos Emiliano Nava Flores (A00842650),
  *          Luis Enrique Castillo Carrillo (A00842390),
  *          Desiderio Ivan Ortegon Morton (A00840591),
@@ -11,19 +14,156 @@
 #ifndef MST_H
 #define MST_H
 
+#include <algorithm>
+#include <cstddef>
+#include <stdexcept>
+#include <vector>
+
 #include "json.h"
 
 /*
- * Atiende el modo "mst". Version provisional: solo confirma que recibio
- * la entrada; se reemplaza por Kruskal cuando se conozca el formato.
+ * Arista no dirigida con su peso.
+ */
+struct AristaMst {
+	std::size_t origen = 0;
+	std::size_t destino = 0;
+	double peso = 0.0;
+};
+
+/*
+ * Conjuntos disjuntos (union-find) con compresion de caminos y union por rango.
+ */
+class ConjuntosDisjuntos {
+public:
+	/*
+	 * Crea un conjunto por cada elemento.
+	 * Parametros:
+	 *   cantidad: numero de elementos.
+	 */
+	explicit ConjuntosDisjuntos(std::size_t cantidad) : padre(cantidad), rango(cantidad, 0) {
+		for (std::size_t indice = 0; indice < cantidad; indice++) {
+			padre[indice] = indice;
+		}
+	}
+
+	/*
+	 * Busca el representante del conjunto de un elemento y acorta el camino.
+	 * Parametros:
+	 *   elemento: elemento a buscar.
+	 * Retorno: el representante de su conjunto.
+	 */
+	std::size_t buscar(std::size_t elemento) {
+		std::size_t raiz = elemento;
+		while (padre[raiz] != raiz) {
+			raiz = padre[raiz];
+		}
+		while (padre[elemento] != raiz) {
+			std::size_t siguiente = padre[elemento];
+			padre[elemento] = raiz;
+			elemento = siguiente;
+		}
+		return raiz;
+	}
+
+	/*
+	 * Une los conjuntos de dos elementos.
+	 * Parametros:
+	 *   primero, segundo: elementos a unir.
+	 * Retorno: true si estaban en conjuntos distintos.
+	 */
+	bool unir(std::size_t primero, std::size_t segundo) {
+		std::size_t raizPrimero = buscar(primero);
+		std::size_t raizSegundo = buscar(segundo);
+		bool distintos = raizPrimero != raizSegundo;
+		if (distintos) {
+			if (rango[raizPrimero] < rango[raizSegundo]) {
+				std::swap(raizPrimero, raizSegundo);
+			}
+			padre[raizSegundo] = raizPrimero;
+			if (rango[raizPrimero] == rango[raizSegundo]) {
+				rango[raizPrimero]++;
+			}
+		}
+		return distintos;
+	}
+
+private:
+	std::vector<std::size_t> padre;
+	std::vector<int> rango;
+};
+
+/*
+ * Lee las aristas de la peticion y verifica que sus nodos existan.
  * Parametros:
- *   entrada: campo "input" de la peticion.
- * Retorno: objeto JSON con la respuesta del modo.
+ *   entrada: campo "input" con "edges" ([{"u", "v", "weight"}, ...]).
+ *   cantidadNodos: numero de nodos (0 .. n - 1).
+ * Retorno: las aristas leidas; lanza una excepcion si un nodo no existe.
+ */
+inline std::vector<AristaMst> leerAristasMst(const ValorJson &entrada, std::size_t cantidadNodos) {
+	std::vector<AristaMst> aristas;
+	for (const ValorJson &aristaJson : entrada.obtenerCampo("edges").elementos) {
+		double origen = aristaJson.obtenerCampo("u").numero;
+		double destino = aristaJson.obtenerCampo("v").numero;
+		bool fueraDeRango = origen < 0 || destino < 0 || origen >= static_cast<double>(cantidadNodos) || destino >= static_cast<double>(cantidadNodos);
+		if (fueraDeRango) {
+			throw std::runtime_error("arista con un nodo inexistente");
+		}
+		AristaMst arista;
+		arista.origen = static_cast<std::size_t>(origen);
+		arista.destino = static_cast<std::size_t>(destino);
+		arista.peso = aristaJson.obtenerCampo("weight").numero;
+		aristas.push_back(arista);
+	}
+	return aristas;
+}
+
+/*
+ * Calcula el arbol de expansion minima con Kruskal. Si el grafo no es
+ * conexo, devuelve el bosque minimo (menos de n - 1 aristas).
+ * Parametros:
+ *   cantidadNodos: numero de nodos.
+ *   aristas: aristas del grafo.
+ * Retorno: las aristas elegidas, en el orden en que se agregaron.
+ */
+inline std::vector<AristaMst> calcularKruskal(std::size_t cantidadNodos, std::vector<AristaMst> aristas) {
+	// stable_sort: con pesos iguales se respeta el orden de la entrada.
+	std::stable_sort(aristas.begin(), aristas.end(), [](const AristaMst &izquierda, const AristaMst &derecha) {
+		return izquierda.peso < derecha.peso;
+	});
+	ConjuntosDisjuntos conjuntos(cantidadNodos);
+	std::vector<AristaMst> arbol;
+	std::size_t indice = 0;
+	while (indice < aristas.size() && arbol.size() + 1 < cantidadNodos) {
+		if (conjuntos.unir(aristas[indice].origen, aristas[indice].destino)) {
+			arbol.push_back(aristas[indice]);
+		}
+		indice++;
+	}
+	return arbol;
+}
+
+/*
+ * Atiende el modo "mst".
+ * Parametros:
+ *   entrada: campo "input" con "nodes" y "edges".
+ * Retorno: objeto JSON {"cost": costo, "edges": [[u, v, peso], ...]}.
  */
 inline ValorJson resolverMst(const ValorJson &entrada) {
+	std::size_t cantidadNodos = entrada.obtenerCampo("nodes").elementos.size();
+	std::vector<AristaMst> arbol = calcularKruskal(cantidadNodos, leerAristasMst(entrada, cantidadNodos));
+	double costo = 0.0;
+	ValorJson aristasJson = crearArreglo();
+	for (const AristaMst &arista : arbol) {
+		costo += arista.peso;
+		ValorJson aristaJson = crearArreglo();
+		aristaJson.agregarElemento(crearNumero(static_cast<double>(arista.origen)));
+		aristaJson.agregarElemento(crearNumero(static_cast<double>(arista.destino)));
+		aristaJson.agregarElemento(crearNumero(arista.peso));
+		aristasJson.agregarElemento(aristaJson);
+	}
 	ValorJson respuesta = crearObjeto();
-	respuesta.agregarCampo("estado", crearTexto("pendiente"));
-	respuesta.agregarCampo("camposRecibidos", crearNumero(static_cast<double>(entrada.llaves.size())));
+	respuesta.agregarCampo("cost", crearNumero(costo));
+	respuesta.agregarCampo("edges", aristasJson);
 	return respuesta;
 }
 

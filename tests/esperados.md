@@ -63,3 +63,12 @@ El script compara cada respuesta contra oráculos independientes del código C++
 | `voronoi_decimales.json` | suma 9 | Coordenadas no enteras |
 | `voronoi_cuadricula_9.json` | 100 cada una | Cuadrícula 3×3: nueve cuadrados iguales |
 | `voronoi_aleatorio_40.json` | suma 1000000 | 40 sitios aleatorios, áreas contra la referencia |
+
+## Pruebas de MST, flujo, firmas, palíndromo y subcadena común
+
+```
+python3 tests/probarModulos.py          # semilla 2038
+python3 tests/probarModulos.py 7        # otra semilla para los aleatorios
+```
+
+Compara cada respuesta con un oráculo escrito aparte en Python: Prim para `mst`, Dinic para `flow` (distinto del Edmonds-Karp del C++), `str.find` para `matching`, fuerza bruta desde cada centro para `palindrome` y programación dinámica O(n·m) para `common`. Incluye casos borde (un nodo, aristas repetidas, lazos, pesos negativos, sumidero inalcanzable, aristas antiparalelas, fuente igual a sumidero, transmisiones vacías, traslapes, empates par/impar, sin caracteres en común), 300–400 casos aleatorios por modo y las pruebas de estrés de los perfiles `lite`, `normal` y `huge` (hasta 5000 nodos, transmisiones de 1 000 000 de caracteres y 200 000 en subcadena común).

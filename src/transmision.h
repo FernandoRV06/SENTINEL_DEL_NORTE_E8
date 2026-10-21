@@ -13,6 +13,9 @@
 #define TRANSMISION_H
 
 #include <string>
+#include <vector>
+
+#include "json.h"
 
 /*
  * Elimina saltos de linea (incluido el \r de Windows), espacios y
@@ -30,6 +33,20 @@ inline std::string normalizarTransmision(const std::string &textoOriginal) {
 		}
 	}
 	return limpio;
+}
+
+/*
+ * Lee un arreglo JSON de cadenas y normaliza cada una.
+ * Parametros:
+ *   arreglo: arreglo JSON de textos (por ejemplo "transmissions").
+ * Retorno: las cadenas ya normalizadas, en el mismo orden.
+ */
+inline std::vector<std::string> leerTransmisiones(const ValorJson &arreglo) {
+	std::vector<std::string> transmisiones;
+	for (const ValorJson &valor : arreglo.elementos) {
+		transmisiones.push_back(normalizarTransmision(valor.texto));
+	}
+	return transmisiones;
 }
 
 #endif
