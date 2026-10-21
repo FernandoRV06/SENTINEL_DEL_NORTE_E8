@@ -1,5 +1,5 @@
 /*
- * Descripcion: desafio 05 · Malware Signature Detection (busqueda de patrones).
+ * Descripcion: desafio 05 (Malware Signature Detection): busqueda de patrones.
  * Busca tres firmas en dos transmisiones y reporta la primera posicion
  * de cada coincidencia, contando desde la posicion uno.
  */

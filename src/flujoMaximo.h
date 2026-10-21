@@ -1,5 +1,5 @@
 /*
- * Descripcion: desafio 03 · Maximum Information Flow (flujo maximo).
+ * Descripcion: desafio 03 (Maximum Information Flow): flujo maximo.
  * Calcula la maxima informacion transportable entre dos nodos usando las
  * capacidades de los enlaces (no las demandas).
  */

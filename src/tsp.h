@@ -1,5 +1,5 @@
 /*
- * Descripcion: desafio 02 · Optimal Maintenance Route (problema del viajante).
+ * Descripcion: desafio 02 (Optimal Maintenance Route): problema del viajante.
  * Visita cada central una vez y regresa al origen con la menor distancia;
  * entre paradas se puede pasar por centrales intermedias.
  */

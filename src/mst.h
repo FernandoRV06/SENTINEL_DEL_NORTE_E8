@@ -1,5 +1,5 @@
 /*
- * Descripcion: desafio 01 · Optimal Network Deployment (arbol de expansion minima).
+ * Descripcion: desafio 01 (Optimal Network Deployment): arbol de expansion minima.
  * Conecta todas las centrales al menor costo de instalacion.
  */
 
@@ -18,7 +18,7 @@ using Json = nlohmann::json;
 
 /*
  * Atiende el modo "mst". Version provisional: solo confirma que recibio
- * la entrada; se reemplaza por Kruskal cuando se conozca el formato.
+ * la entrada; se reemplaza por Kruskal.
  * Parametros:
  *   entrada: campo "input" de la peticion.
  * Retorno: objeto JSON con la respuesta del modo.

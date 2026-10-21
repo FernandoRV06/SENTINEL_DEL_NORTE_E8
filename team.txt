@@ -1,4 +1,4 @@
-Equipo: Sentinela del Norte · TC2038
+Equipo: Sentinela del Norte (TC2038)
 
 Integrante 1: Carlos Emiliano Nava Flores
 Contribuciones: MST y TSP (caminos mas cortos, Held-Karp, vecino mas cercano).

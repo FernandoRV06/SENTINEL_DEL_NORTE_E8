@@ -1,5 +1,5 @@
 /*
- * Descripcion: desafio 07 · Transmission Similarity Analysis (subcadena comun mas larga).
+ * Descripcion: desafio 07 (Transmission Similarity Analysis): subcadena comun mas larga.
  * Encuentra la subcadena continua mas larga presente en ambas
  * transmisiones y reporta sus posiciones en la primera.
  */

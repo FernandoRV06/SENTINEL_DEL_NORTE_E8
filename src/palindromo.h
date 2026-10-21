@@ -1,5 +1,5 @@
 /*
- * Descripcion: desafio 06 · Mirrored Code Analysis (palindromo mas largo).
+ * Descripcion: desafio 06 (Mirrored Code Analysis): palindromo mas largo.
  * Encuentra en cada transmision el palindromo continuo mas largo, de
  * longitud par o impar, sobre caracteres hexadecimales.
  */

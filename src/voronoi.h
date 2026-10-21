@@ -1,5 +1,5 @@
 /*
- * Descripcion: desafio 04 · Geospatial Network Coverage (diagrama de Voronoi).
+ * Descripcion: desafio 04 (Geospatial Network Coverage): diagrama de Voronoi.
  * Divide el dominio en regiones segun la central mas cercana y responde
  * consultas de proximidad, sobre coordenadas planas.
  */

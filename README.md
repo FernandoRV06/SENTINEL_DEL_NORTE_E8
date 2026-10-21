@@ -1,4 +1,4 @@
-# SENTINEL Digital Twin · Sentinela del Norte
+# Sentinela del Norte: SENTINEL Digital Twin
 
 Hackathon integrador de TC2038 (Análisis y Diseño de Algoritmos Avanzados). Plataforma que integra 7 algoritmos de infraestructura de red y ciberseguridad sobre la red GÉANT y transmisiones derivadas de CIC-IDS2017.
 
@@ -20,9 +20,9 @@ results/    Mediciones de los benchmarks
 | `src/flujoMaximo.h` | Desafío 03 · flujo máximo |
 | `src/voronoi.h` | Desafío 04 · regiones de Voronoi |
 | `src/transmision.h` | Limpieza de transmisiones (compartido por 05, 06 y 07) |
-| `src/firmas.h` | Desafío 05 · detección de firmas |
-| `src/palindromo.h` | Desafío 06 · palíndromo más largo |
-| `src/subcadenaComun.h` | Desafío 07 · subcadena común más larga |
+| `src/firmas.h` | Desafío 05: detección de firmas |
+| `src/palindromo.h` | Desafío 06: palíndromo más largo |
+| `src/subcadenaComun.h` | Desafío 07: subcadena común más larga |
 
 ## Compilación
 
