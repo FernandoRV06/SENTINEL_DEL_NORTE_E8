@@ -4,6 +4,11 @@
  * {"mode": "...", "input": {...}}, lo envia al modulo del desafio indicado
  * y escribe UN objeto JSON con la respuesta en la salida estandar.
  * Lee y escribe JSON con src/json.h (sin librerias externas).
+ * Autores: Carlos Emiliano Nava Flores, Luis Enrique Castillo Carrillo,
+ *          Desiderio Ivan Ortegon Morton, Fernando Robles Vidrio
+ * Matriculas: A00840591 (Desiderio), A00843290 (Fernando),
+ *             pendientes las de Carlos y Luis
+ * Fecha de creacion: 20/10/2026
  */
 
 #include <exception>
