@@ -2,15 +2,17 @@
  * Descripcion: desafio 06 · Mirrored Code Analysis (palindromo mas largo).
  * Encuentra en cada transmision el palindromo continuo mas largo, de
  * longitud par o impar, sobre caracteres hexadecimales.
+ * Autores: Carlos Emiliano Nava Flores (A00842650),
+ *          Luis Enrique Castillo Carrillo (A00842390),
+ *          Desiderio Ivan Ortegon Morton (A00840591),
+ *          Fernando Robles Vidrio (A00843290)
+ * Fecha de creacion: 20/10/2026
  */
 
 #ifndef PALINDROMO_H
 #define PALINDROMO_H
 
-#include "json.hpp"
-
-using Json = nlohmann::json;
-
+#include "json.h"
 #include "transmision.h"
 
 /*
@@ -20,8 +22,10 @@ using Json = nlohmann::json;
  *   entrada: campo "input" de la peticion.
  * Retorno: objeto JSON con la respuesta del modo.
  */
-inline Json resolverPalindromo(const Json &entrada) {
-	Json respuesta = {{"estado", "pendiente"}, {"camposRecibidos", entrada.size()}};
+inline ValorJson resolverPalindromo(const ValorJson &entrada) {
+	ValorJson respuesta = crearObjeto();
+	respuesta.agregarCampo("estado", crearTexto("pendiente"));
+	respuesta.agregarCampo("camposRecibidos", crearNumero(static_cast<double>(entrada.llaves.size())));
 	return respuesta;
 }
 

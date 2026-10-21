@@ -14,7 +14,7 @@ results/    Mediciones de los benchmarks
 | Archivo | Contenido |
 | --- | --- |
 | `src/main.cpp` | Lee la petición JSON, la envía al módulo del modo y escribe la respuesta |
-| `src/json.hpp` | Librería externa nlohmann/json para leer y escribir JSON |
+| `src/json.h` | Lectura y escritura de JSON (sin librerías externas) |
 | `src/mst.h` | Desafío 01 · árbol de expansión mínima |
 | `src/tsp.h` | Desafío 02 · ruta de mantenimiento |
 | `src/flujoMaximo.h` | Desafío 03 · flujo máximo |
@@ -50,7 +50,7 @@ Pendiente de completar: capas de datos, núcleo en C++, módulos y aplicación.
 
 ## Dependencias
 
-Núcleo: biblioteca estándar de C++17 y [nlohmann/json](https://github.com/nlohmann/json) versión 3.11.3 (licencia MIT), incluida como `src/json.hpp`. Es código externo: el estándar de codificación aplica al código del equipo. Aplicación: pendiente.
+Núcleo: solo la biblioteca estándar de C++17. El autograder de la página compila sin soporte de excepciones, por eso el código no usa `try`, `catch` ni `throw` fuera de `main.cpp` y `json.h`. Aplicación: pendiente.
 
 ## Datos
 
