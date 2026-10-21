@@ -1,12 +1,6 @@
 /*
  * Descripcion: desafio 01 · Optimal Network Deployment (arbol de expansion minima).
  * Conecta todas las centrales al menor costo de instalacion.
- * Responsable: integrante 1; Tecnicas: Kruskal (principal) y Prim.
- * Autores: Carlos Emiliano Nava Flores (A0XXXXXXX),
- *          Luis Enrique Castillo Carrillo (A0XXXXXXX),
- *          Desiderio Ivan Ortegon Morton (A0XXXXXXX),
- *          Fernando Robles Vidrio (A00843290)
- * Fecha de creacion: 20/10/2026
  */
 
 #ifndef MST_H

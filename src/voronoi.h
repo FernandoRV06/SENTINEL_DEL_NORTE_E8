@@ -2,13 +2,6 @@
  * Descripcion: desafio 04 · Geospatial Network Coverage (diagrama de Voronoi).
  * Divide el dominio en regiones segun la central mas cercana y responde
  * consultas de proximidad, sobre coordenadas planas.
- * Responsable: integrante 2; Tecnicas: recorte por semiplanos (principal) y
- * Fortune como alternativa analizada.
- * Autores: Carlos Emiliano Nava Flores (A0XXXXXXX),
- *          Luis Enrique Castillo Carrillo (A0XXXXXXX),
- *          Desiderio Ivan Ortegon Morton (A0XXXXXXX),
- *          Fernando Robles Vidrio (A00843290)
- * Fecha de creacion: 20/10/2026
  */
 
 #ifndef VORONOI_H

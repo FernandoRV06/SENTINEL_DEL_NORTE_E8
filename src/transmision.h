@@ -2,12 +2,6 @@
  * Descripcion: utilerias compartidas por los tres desafios de ciberseguridad.
  * Normaliza las transmisiones: elimina saltos de linea y espacios para que
  * las posiciones (en base 1) se cuenten sobre la secuencia limpia.
- * Responsable: integrante 3;
- * Autores: Carlos Emiliano Nava Flores (A0XXXXXXX),
- *          Luis Enrique Castillo Carrillo (A0XXXXXXX),
- *          Desiderio Ivan Ortegon Morton (A0XXXXXXX),
- *          Fernando Robles Vidrio (A00843290)
- * Fecha de creacion: 20/10/2026
  */
 
 #ifndef TRANSMISION_H

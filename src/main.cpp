@@ -1,14 +1,9 @@
 /*
- * SENTINEL Digital Twin · nucleo algoritmico (Hackathon TC2038).
+ * SENTINEL Digital Twin · nucleo algoritmico.
  * Descripcion: lee UN objeto JSON de la entrada estandar con la forma
  * {"mode": "...", "input": {...}}, lo envia al modulo del desafio indicado
  * y escribe UN objeto JSON con la respuesta en la salida estandar.
- * Usa la libreria externa nlohmann/json (licencia MIT) para leer y escribir JSON.
- * Autores: Carlos Emiliano Nava Flores (A0XXXXXXX),
- *          Luis Enrique Castillo Carrillo (A0XXXXXXX),
- *          Desiderio Ivan Ortegon Morton (A0XXXXXXX),
- *          Fernando Robles Vidrio (A00843290)
- * Fecha de creacion: 20/10/2026
+ * Usa la libreria externa nlohmann/json para leer y escribir JSON.
  */
 
 #include <exception>
@@ -27,7 +22,7 @@
 #include "tsp.h"
 #include "voronoi.h"
 
-// Nombres de los modos, tal como los envia el autograder de la pagina.
+// Nombres de los modos.
 const std::string MODO_MST = "mst";
 const std::string MODO_TSP = "tsp";
 const std::string MODO_FLUJO = "flow";

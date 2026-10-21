@@ -2,13 +2,6 @@
  * Descripcion: desafio 06 · Mirrored Code Analysis (palindromo mas largo).
  * Encuentra en cada transmision el palindromo continuo mas largo, de
  * longitud par o impar, sobre caracteres hexadecimales.
- * Responsable: integrante 3; Tecnicas: Manacher (principal) y expansion
- * desde el centro.
- * Autores: Carlos Emiliano Nava Flores (A0XXXXXXX),
- *          Luis Enrique Castillo Carrillo (A0XXXXXXX),
- *          Desiderio Ivan Ortegon Morton (A0XXXXXXX),
- *          Fernando Robles Vidrio (A00843290)
- * Fecha de creacion: 20/10/2026
  */
 
 #ifndef PALINDROMO_H
