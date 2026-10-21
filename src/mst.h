@@ -4,6 +4,7 @@
  * Usa Kruskal: ordena las aristas por peso y agrega cada una si une dos
  * componentes distintas (conjuntos disjuntos con compresion de caminos y
  * union por rango). Tiempo O(E log E), memoria O(V + E).
+ * Alternativa para comparar: Prim con monticulo binario, O(E log V).
  * Autores: Carlos Emiliano Nava Flores (A00842650),
  *          Luis Enrique Castillo Carrillo (A00842390),
  *          Desiderio Ivan Ortegon Morton (A00840591),
@@ -17,6 +18,8 @@
 #include <algorithm>
 #include <cstddef>
 #include <stdexcept>
+#include <string>
+#include <utility>
 #include <vector>
 
 #include "json.h"
@@ -143,14 +146,77 @@ inline std::vector<AristaMst> calcularKruskal(std::size_t cantidadNodos, std::ve
 }
 
 /*
+ * Calcula el arbol de expansion minima con Prim y un monticulo binario:
+ * crece un solo arbol desde el nodo 0 tomando siempre la arista mas barata
+ * que sale de el. O(E log V). Si el grafo no es conexo, solo cubre la
+ * componente del nodo 0.
+ * Parametros:
+ *   cantidadNodos: numero de nodos.
+ *   aristas: aristas del grafo.
+ * Retorno: las aristas elegidas, en el orden en que se agregaron.
+ */
+inline std::vector<AristaMst> calcularPrim(std::size_t cantidadNodos, const std::vector<AristaMst> &aristas) {
+	std::vector<std::vector<AristaMst>> vecinos(cantidadNodos);
+	for (const AristaMst &arista : aristas) {
+		vecinos[arista.origen].push_back(arista);
+		AristaMst reversa = arista;
+		std::swap(reversa.origen, reversa.destino);
+		vecinos[arista.destino].push_back(reversa);
+	}
+	// El monticulo guarda (peso, indice de la arista candidata en "candidatas").
+	std::vector<AristaMst> candidatas;
+	std::vector<std::pair<double, std::size_t>> monticulo;
+	auto mayorPrimero = [](const std::pair<double, std::size_t> &izquierda, const std::pair<double, std::size_t> &derecha) {
+		return izquierda > derecha;
+	};
+	std::vector<bool> enArbol(cantidadNodos, false);
+	std::vector<AristaMst> arbol;
+	if (cantidadNodos > 0) {
+		enArbol[0] = true;
+		for (const AristaMst &arista : vecinos[0]) {
+			candidatas.push_back(arista);
+			monticulo.push_back(std::make_pair(arista.peso, candidatas.size() - 1));
+			std::push_heap(monticulo.begin(), monticulo.end(), mayorPrimero);
+		}
+	}
+	while (!monticulo.empty() && arbol.size() + 1 < cantidadNodos) {
+		std::pop_heap(monticulo.begin(), monticulo.end(), mayorPrimero);
+		AristaMst elegida = candidatas[monticulo.back().second];
+		monticulo.pop_back();
+		if (!enArbol[elegida.destino]) {
+			enArbol[elegida.destino] = true;
+			arbol.push_back(elegida);
+			for (const AristaMst &arista : vecinos[elegida.destino]) {
+				if (!enArbol[arista.destino]) {
+					candidatas.push_back(arista);
+					monticulo.push_back(std::make_pair(arista.peso, candidatas.size() - 1));
+					std::push_heap(monticulo.begin(), monticulo.end(), mayorPrimero);
+				}
+			}
+		}
+	}
+	return arbol;
+}
+
+/*
  * Atiende el modo "mst".
  * Parametros:
- *   entrada: campo "input" con "nodes" y "edges".
+ *   entrada: campo "input" con "nodes", "edges" y, opcional,
+ *            "technique": "kruskal" (por defecto) o "prim".
  * Retorno: objeto JSON {"cost": costo, "edges": [[u, v, peso], ...]}.
  */
 inline ValorJson resolverMst(const ValorJson &entrada) {
 	std::size_t cantidadNodos = entrada.obtenerCampo("nodes").elementos.size();
-	std::vector<AristaMst> arbol = calcularKruskal(cantidadNodos, leerAristasMst(entrada, cantidadNodos));
+	std::vector<AristaMst> aristasEntrada = leerAristasMst(entrada, cantidadNodos);
+	std::string tecnica = leerTecnica(entrada, "kruskal");
+	std::vector<AristaMst> arbol;
+	if (tecnica == "kruskal") {
+		arbol = calcularKruskal(cantidadNodos, aristasEntrada);
+	} else if (tecnica == "prim") {
+		arbol = calcularPrim(cantidadNodos, aristasEntrada);
+	} else {
+		throw std::runtime_error("tecnica de mst desconocida: " + tecnica);
+	}
 	double costo = 0.0;
 	ValorJson aristasJson = crearArreglo();
 	for (const AristaMst &arista : arbol) {

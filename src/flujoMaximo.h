@@ -4,6 +4,8 @@
  * capacidades de los enlaces (no las demandas). Los enlaces son dirigidos.
  * Usa Edmonds-Karp: busca caminos de aumento con BFS en la red residual,
  * siempre el de menos aristas. Tiempo O(V * E^2), memoria O(V + E).
+ * Alternativa para comparar: Ford-Fulkerson con DFS, O(E * f) donde f es
+ * el valor del flujo (depende de las capacidades, no solo del tamano).
  * Autores: Carlos Emiliano Nava Flores (A00842650),
  *          Luis Enrique Castillo Carrillo (A00842390),
  *          Desiderio Ivan Ortegon Morton (A00840591),
@@ -18,6 +20,7 @@
 #include <cstddef>
 #include <limits>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 #include "json.h"
@@ -55,15 +58,17 @@ public:
 	}
 
 	/*
-	 * Calcula el flujo maximo con Edmonds-Karp.
+	 * Calcula el flujo maximo aumentando por caminos de la red residual.
 	 * Parametros:
 	 *   fuente, sumidero: nodos de inicio y fin.
+	 *   porAnchura: true para Edmonds-Karp (BFS, camino mas corto),
+	 *               false para Ford-Fulkerson con DFS.
 	 * Retorno: el valor del flujo maximo.
 	 */
-	double calcularFlujoMaximo(std::size_t fuente, std::size_t sumidero) {
+	double calcularFlujoMaximo(std::size_t fuente, std::size_t sumidero, bool porAnchura) {
 		double total = 0.0;
 		std::vector<std::size_t> aristaLlegada(primera.size(), SIN_ARISTA_FLUJO);
-		while (fuente != sumidero && buscarCamino(fuente, sumidero, aristaLlegada)) {
+		while (fuente != sumidero && buscarCamino(fuente, sumidero, aristaLlegada, porAnchura)) {
 			// El cuello de botella es la menor capacidad residual del camino.
 			double cuello = std::numeric_limits<double>::infinity();
 			std::size_t nodo = sumidero;
@@ -105,26 +110,34 @@ private:
 	}
 
 	/*
-	 * Busca con BFS el camino de aumento con menos aristas.
+	 * Busca un camino de aumento. Con BFS (cola) sale el de menos aristas;
+	 * con DFS (pila) sale el primero que se encuentre en profundidad.
 	 * Parametros:
 	 *   fuente, sumidero: nodos de inicio y fin.
 	 *   aristaLlegada: se llena con la arista por la que se llego a cada nodo.
+	 *   porAnchura: true para BFS, false para DFS.
 	 * Retorno: true si el sumidero es alcanzable en la red residual.
 	 */
-	bool buscarCamino(std::size_t fuente, std::size_t sumidero, std::vector<std::size_t> &aristaLlegada) {
+	bool buscarCamino(std::size_t fuente, std::size_t sumidero, std::vector<std::size_t> &aristaLlegada, bool porAnchura) {
 		std::vector<bool> visitado(primera.size(), false);
-		std::vector<std::size_t> cola(1, fuente);
+		std::vector<std::size_t> pendientes(1, fuente);
 		visitado[fuente] = true;
 		std::size_t frente = 0;
-		while (frente < cola.size() && !visitado[sumidero]) {
-			std::size_t nodo = cola[frente];
-			frente++;
+		while (frente < pendientes.size() && !visitado[sumidero]) {
+			std::size_t nodo = 0;
+			if (porAnchura) {
+				nodo = pendientes[frente];
+				frente++;
+			} else {
+				nodo = pendientes.back();
+				pendientes.pop_back();
+			}
 			for (std::size_t arista = primera[nodo]; arista != SIN_ARISTA_FLUJO; arista = siguiente[arista]) {
 				std::size_t vecino = destino[arista];
 				if (!visitado[vecino] && capacidad[arista] > TOLERANCIA_FLUJO) {
 					visitado[vecino] = true;
 					aristaLlegada[vecino] = arista;
-					cola.push_back(vecino);
+					pendientes.push_back(vecino);
 				}
 			}
 		}
@@ -150,7 +163,8 @@ inline std::size_t leerNodoFlujo(const ValorJson &valor, std::size_t cantidad) {
  * Atiende el modo de flujo maximo.
  * Parametros:
  *   entrada: campo "input" con "n", "edges" ([{"u", "v", "capacity"}, ...]),
- *            "source" y "sink".
+ *            "source", "sink" y, opcional, "technique": "edmonds-karp"
+ *            (por defecto) o "ford-fulkerson".
  * Retorno: objeto JSON {"flow": valor}.
  */
 inline ValorJson resolverFlujoMaximo(const ValorJson &entrada) {
@@ -163,8 +177,12 @@ inline ValorJson resolverFlujoMaximo(const ValorJson &entrada) {
 	}
 	std::size_t fuente = leerNodoFlujo(entrada.obtenerCampo("source"), cantidad);
 	std::size_t sumidero = leerNodoFlujo(entrada.obtenerCampo("sink"), cantidad);
+	std::string tecnica = leerTecnica(entrada, "edmonds-karp");
+	if (tecnica != "edmonds-karp" && tecnica != "ford-fulkerson") {
+		throw std::runtime_error("tecnica de flow desconocida: " + tecnica);
+	}
 	ValorJson respuesta = crearObjeto();
-	respuesta.agregarCampo("flow", crearNumero(red.calcularFlujoMaximo(fuente, sumidero)));
+	respuesta.agregarCampo("flow", crearNumero(red.calcularFlujoMaximo(fuente, sumidero, tecnica == "edmonds-karp")));
 	return respuesta;
 }
 

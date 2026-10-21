@@ -4,7 +4,8 @@
  * sobre coordenadas planas. La celda de cada central es la interseccion del
  * rectangulo con los semiplanos "mas cerca de esta central que de la otra".
  * Usa recorte por semiplanos (O(n^2) en el peor caso, con poda por
- * distancia); Fortune queda como alternativa analizada.
+ * distancia); Fortune queda como alternativa analizada. Para comparar se
+ * puede pedir el mismo recorte sin poda (contra las n - 1 mediatrices).
  * Autores: Carlos Emiliano Nava Flores (A00842650),
  *          Luis Enrique Castillo Carrillo (A00842390),
  *          Desiderio Ivan Ortegon Morton (A00840591),
@@ -19,6 +20,7 @@
 #include <cmath>
 #include <cstddef>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 #include "json.h"
@@ -107,9 +109,10 @@ inline double calcularRadioCuadrado(const PuntoVoronoi &sitio, const std::vector
  *   sitios: todas las centrales.
  *   propio: indice de la central cuya celda se construye.
  *   rectangulo: vertices del dominio en sentido antihorario.
+ *   podar: false recorta contra todos los sitios (version sin poda).
  * Retorno: los vertices de la celda.
  */
-inline std::vector<PuntoVoronoi> construirCelda(const std::vector<PuntoVoronoi> &sitios, std::size_t propio, const std::vector<PuntoVoronoi> &rectangulo) {
+inline std::vector<PuntoVoronoi> construirCelda(const std::vector<PuntoVoronoi> &sitios, std::size_t propio, const std::vector<PuntoVoronoi> &rectangulo, bool podar) {
 	const PuntoVoronoi &sitio = sitios[propio];
 	std::vector<std::size_t> otros;
 	for (std::size_t indice = 0; indice < sitios.size(); indice++) {
@@ -132,7 +135,7 @@ inline std::vector<PuntoVoronoi> construirCelda(const std::vector<PuntoVoronoi> 
 	while (posicion < otros.size() && puedeRecortar && !celda.empty()) {
 		const PuntoVoronoi &otro = sitios[otros[posicion]];
 		// (d/2)^2 > r^2  equivale a  d^2 > 4 r^2.
-		if (distanciaCuadrada[otros[posicion]] > 4.0 * calcularRadioCuadrado(sitio, celda) + TOLERANCIA_VORONOI) {
+		if (podar && distanciaCuadrada[otros[posicion]] > 4.0 * calcularRadioCuadrado(sitio, celda) + TOLERANCIA_VORONOI) {
 			puedeRecortar = false;
 		} else {
 			// Puntos mas cerca de "sitio" que de "otro":
@@ -151,7 +154,8 @@ inline std::vector<PuntoVoronoi> construirCelda(const std::vector<PuntoVoronoi> 
  * Atiende el modo "voronoi": calcula una celda por sitio, en el mismo orden.
  * Parametros:
  *   entrada: campo "input" con "sites" ([[x, y], ...]) y
- *            "bounds" ([xMin, yMin, xMax, yMax]).
+ *            "bounds" ([xMin, yMin, xMax, yMax]) y, opcional, "technique":
+ *            "half-plane" (por defecto, con poda) o "half-plane-naive".
  * Retorno: objeto JSON {"cells": [[[x, y], ...], ...]}.
  */
 inline ValorJson resolverVoronoi(const ValorJson &entrada) {
@@ -176,10 +180,14 @@ inline ValorJson resolverVoronoi(const ValorJson &entrada) {
 	for (const ValorJson &sitio : entrada.obtenerCampo("sites").elementos) {
 		sitios.push_back(leerPuntoVoronoi(sitio));
 	}
+	std::string tecnica = leerTecnica(entrada, "half-plane");
+	if (tecnica != "half-plane" && tecnica != "half-plane-naive") {
+		throw std::runtime_error("tecnica de voronoi desconocida: " + tecnica);
+	}
 	ValorJson celdas = crearArreglo();
 	for (std::size_t indice = 0; indice < sitios.size(); indice++) {
 		ValorJson celdaJson = crearArreglo();
-		for (const PuntoVoronoi &vertice : construirCelda(sitios, indice, rectangulo)) {
+		for (const PuntoVoronoi &vertice : construirCelda(sitios, indice, rectangulo, tecnica == "half-plane")) {
 			ValorJson verticeJson = crearArreglo();
 			verticeJson.agregarElemento(crearNumero(vertice.x));
 			verticeJson.agregarElemento(crearNumero(vertice.y));

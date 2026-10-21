@@ -1,0 +1,75 @@
+modo,escenario,tecnica,n,m,segundos,memoria_mb,exponente,teoria,coincide,resultado
+mst,aleatorio E = 5V,kruskal,1000,4999,0.0173,8.5,,O(E log E),si,119524
+mst,aleatorio E = 5V,prim,1000,4999,0.0234,10.3,,O(E log V),si,119524
+mst,aleatorio E = 5V,kruskal,10000,49999,0.1559,70.5,0.95,O(E log E),si,1161160
+mst,aleatorio E = 5V,prim,10000,49999,0.1541,71.8,0.82,O(E log V),si,1161160
+mst,aleatorio E = 5V,kruskal,50000,249999,0.7976,340.4,1.01,O(E log E),si,5894677
+mst,aleatorio E = 5V,prim,50000,249999,0.7974,356.7,1.02,O(E log V),si,5894677
+tsp,puntos en el plano,held-karp,8,8,0.0019,1.5,,O(2^n n^2),brecha 0.00 %,2027
+tsp,puntos en el plano,nearest-neighbor,8,8,0.0016,1.5,,O(n^2),brecha 3.16 %,2091
+tsp,puntos en el plano,2-opt,8,8,0.0015,1.5,,O(n^2) por pasada,brecha 0.00 %,2027
+tsp,puntos en el plano,held-karp,12,12,0.002,2.3,,O(2^n n^2),brecha 0.00 %,2692
+tsp,puntos en el plano,nearest-neighbor,12,12,0.0017,1.5,,O(n^2),brecha 6.13 %,2857
+tsp,puntos en el plano,2-opt,12,12,0.0016,1.5,,O(n^2) por pasada,brecha 1.82 %,2741
+tsp,puntos en el plano,held-karp,16,16,0.013,17.6,,O(2^n n^2),brecha 0.00 %,2937
+tsp,puntos en el plano,nearest-neighbor,16,16,0.0018,1.6,,O(n^2),brecha 8.17 %,3177
+tsp,puntos en el plano,2-opt,16,16,0.0017,1.6,,O(n^2) por pasada,brecha 0.00 %,2937
+tsp,puntos en el plano,held-karp,18,18,0.0533,73.7,11.98,O(2^n n^2),brecha 0.00 %,3815
+tsp,puntos en el plano,nearest-neighbor,18,18,0.002,1.6,,O(n^2),brecha 6.68 %,4070
+tsp,puntos en el plano,2-opt,18,18,0.0018,1.6,,O(n^2) por pasada,brecha 0.00 %,3815
+tsp,puntos en el plano (grande),nearest-neighbor,100,100,0.0053,4.6,,O(n^2),heuristica,8604
+tsp,puntos en el plano (grande),2-opt,100,100,0.0053,4.6,,O(n^2) por pasada,heuristica,8095
+tsp,puntos en el plano (grande),nearest-neighbor,500,500,0.1019,70.6,1.84,O(n^2),heuristica,20233
+tsp,puntos en el plano (grande),2-opt,500,500,0.0989,70.6,1.82,O(n^2) por pasada,heuristica,18089
+tsp,puntos en el plano (grande),nearest-neighbor,1000,1000,0.3692,248.3,1.86,O(n^2),heuristica,29297
+tsp,puntos en el plano (grande),2-opt,1000,1000,0.3653,248.4,1.89,O(n^2) por pasada,heuristica,24954
+tsp,puntos en el plano (grande),nearest-neighbor,2000,2000,1.4853,984.8,2.01,O(n^2),heuristica,39824
+tsp,puntos en el plano (grande),2-opt,2000,2000,1.4601,983.7,2.0,O(n^2) por pasada,heuristica,35118
+flow,aleatorio E = 10V,edmonds-karp,100,989,0.0049,3.2,,O(V E^2),si,52897
+flow,aleatorio E = 10V,ford-fulkerson,100,989,0.0049,3.2,,O(E f),si,52897
+flow,aleatorio E = 10V,edmonds-karp,300,2991,0.0108,5.7,,O(V E^2),si,31189
+flow,aleatorio E = 10V,ford-fulkerson,300,2991,0.0148,5.8,,O(E f),si,31189
+flow,aleatorio E = 10V,edmonds-karp,1000,9992,0.0338,14.9,,O(V E^2),si,37140
+flow,aleatorio E = 10V,ford-fulkerson,1000,9992,0.3636,15.0,2.66,O(E f),si,37140
+voronoi,sitios aleatorios,half-plane,100,100,0.0031,2.4,,O(n k log n) con poda,si,10000000000
+voronoi,sitios aleatorios,half-plane-naive,100,100,0.0035,2.3,,O(n^2 k),si,10000000000
+voronoi,sitios aleatorios,half-plane,500,500,0.012,4.7,,O(n k log n) con poda,si,10000000000
+voronoi,sitios aleatorios,half-plane-naive,500,500,0.0323,4.7,,O(n^2 k),si,10000000000
+voronoi,sitios aleatorios,half-plane,2000,2000,0.1434,12.6,1.79,O(n k log n) con poda,si,10000000000
+voronoi,sitios aleatorios,half-plane-naive,2000,2000,0.4612,12.7,1.92,O(n^2 k),si,10000000000
+voronoi,sitios aleatorios,half-plane,5000,5000,0.9402,30.0,2.05,O(n k log n) con poda,si,10000000000
+voronoi,sitios aleatorios,half-plane-naive,5000,5000,2.8854,30.0,2.0,O(n^2 k),si,10000000000
+matching,aleatorio,kmp,10000,10000,0.0036,1.7,,O(n + m),si,"[[5001, -1, -1], [-1, -1, -1]]"
+matching,aleatorio,naive,10000,10000,0.0033,1.7,,O(n m) peor caso,si,"[[5001, -1, -1], [-1, -1, -1]]"
+matching,aleatorio,kmp,100000,100000,0.0161,2.9,,O(n + m),si,"[[50001, -1, -1], [-1, -1, -1]]"
+matching,aleatorio,naive,100000,100000,0.0152,2.9,,O(n m) peor caso,si,"[[50001, -1, -1], [-1, -1, -1]]"
+matching,aleatorio,kmp,1000000,1000000,0.133,12.8,0.92,O(n + m),si,"[[500001, -1, -1], [-1, -1, -1]]"
+matching,aleatorio,naive,1000000,1000000,0.1256,12.8,0.92,O(n m) peor caso,si,"[[500001, -1, -1], [-1, -1, -1]]"
+matching,peor caso (AAAA...),kmp,10000,10000,0.0035,1.7,,O(n + m),si,"[[-1, -1, -1], [-1, -1, -1]]"
+matching,peor caso (AAAA...),naive,10000,10000,0.01,1.7,,O(n m) peor caso,si,"[[-1, -1, -1], [-1, -1, -1]]"
+matching,peor caso (AAAA...),kmp,100000,100000,0.0165,3.0,,O(n + m),si,"[[-1, -1, -1], [-1, -1, -1]]"
+matching,peor caso (AAAA...),naive,100000,100000,0.0862,2.9,0.94,O(n m) peor caso,si,"[[-1, -1, -1], [-1, -1, -1]]"
+matching,peor caso (AAAA...),kmp,1000000,1000000,0.1299,12.8,0.9,O(n + m),si,"[[-1, -1, -1], [-1, -1, -1]]"
+matching,peor caso (AAAA...),naive,1000000,1000000,0.8503,12.8,0.99,O(n m) peor caso,si,"[[-1, -1, -1], [-1, -1, -1]]"
+palindrome,aleatorio,manacher,10000,10000,0.0035,1.9,,O(n),si,"[[7593, 7601], [8740, 8747]]"
+palindrome,aleatorio,center,10000,10000,0.0034,1.7,,O(n^2) peor caso,si,"[[7593, 7601], [8740, 8747]]"
+palindrome,aleatorio,manacher,100000,100000,0.0153,4.2,,O(n),si,"[[7611, 7617], [77395, 77405]]"
+palindrome,aleatorio,center,100000,100000,0.0158,2.9,,O(n^2) peor caso,si,"[[7611, 7617], [77395, 77405]]"
+palindrome,aleatorio,manacher,1000000,1000000,0.1305,28.1,0.93,O(n),si,"[[778963, 778972], [184994, 185003]]"
+palindrome,aleatorio,center,1000000,1000000,0.1278,12.8,0.91,O(n^2) peor caso,si,"[[778963, 778972], [184994, 185003]]"
+palindrome,peor caso (AAAA...),manacher,1000,1000,0.0023,1.5,,O(n),si,"[[1, 1000], [1, 999]]"
+palindrome,peor caso (AAAA...),center,1000,1000,0.0023,1.4,,O(n^2) peor caso,si,"[[1, 1000], [1, 999]]"
+palindrome,peor caso (AAAA...),manacher,10000,10000,0.0033,1.9,,O(n),si,"[[1, 10000], [1, 9999]]"
+palindrome,peor caso (AAAA...),center,10000,10000,0.0293,1.7,,O(n^2) peor caso,si,"[[1, 10000], [1, 9999]]"
+palindrome,peor caso (AAAA...),manacher,30000,30000,0.0063,2.4,,O(n),si,"[[1, 30000], [1, 29999]]"
+palindrome,peor caso (AAAA...),center,30000,30000,0.2269,2.0,1.86,O(n^2) peor caso,si,"[[1, 30000], [1, 29999]]"
+palindrome,peor caso (AAAA...),manacher,100000,100000,0.0154,4.2,,O(n),si,"[[1, 100000], [1, 99999]]"
+palindrome,peor caso (AAAA...),center,100000,100000,2.4634,2.9,1.98,O(n^2) peor caso,si,"[[1, 100000], [1, 99999]]"
+common,bloque compartido n/8,suffix-array,1000,1000,0.0023,1.6,,O(n log n),si,125
+common,bloque compartido n/8,dp,1000,1000,0.003,1.5,,O(n m),si,125
+common,bloque compartido n/8,suffix-array,5000,5000,0.0031,2.2,,O(n log n),si,625
+common,bloque compartido n/8,dp,5000,5000,0.0262,1.7,,O(n m),si,625
+common,bloque compartido n/8,suffix-array,20000,20000,0.0072,4.2,,O(n log n),si,2500
+common,bloque compartido n/8,dp,20000,20000,0.3859,2.2,1.94,O(n m),si,2500
+common,bloque compartido n/8,suffix-array,200000,200000,0.0667,26.2,0.97,O(n log n),si,25000
+common,bloque compartido n/8,dp,200000,200000,39.4763,6.8,2.01,O(n m),si,25000

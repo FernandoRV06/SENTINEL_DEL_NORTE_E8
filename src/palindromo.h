@@ -3,6 +3,7 @@
  * Encuentra en cada transmision el palindromo continuo mas largo, de
  * longitud par o impar, sobre caracteres hexadecimales.
  * Usa Manacher: O(n) tiempo y memoria por transmision.
+ * Alternativa para comparar: expansion desde cada centro, O(n^2).
  * Autores: Carlos Emiliano Nava Flores (A00842650),
  *          Luis Enrique Castillo Carrillo (A00842390),
  *          Desiderio Ivan Ortegon Morton (A00840591),
@@ -15,6 +16,7 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -100,15 +102,56 @@ inline RangoPalindromo buscarPalindromoMasLargo(const std::string &texto) {
 }
 
 /*
+ * Encuentra el palindromo mas largo expandiendo desde cada uno de los
+ * 2n - 1 centros (caracter o hueco entre dos caracteres). O(n^2), O(1) extra.
+ * Parametros:
+ *   texto: transmision normalizada.
+ * Retorno: su rango en base 1, o [0, 0] si el texto esta vacio.
+ */
+inline RangoPalindromo expandirDesdeCentros(const std::string &texto) {
+	RangoPalindromo mejor;
+	std::size_t mejorLongitud = 0;
+	for (std::size_t centro = 0; centro < texto.size(); centro++) {
+		for (std::size_t ajuste = 0; ajuste < 2; ajuste++) {
+			// El palindromo es texto[izquierda, derecha): con ajuste 0 empieza en
+			// el caracter centro (impar); con ajuste 1, vacio tras el centro (par).
+			std::size_t izquierda = centro + ajuste;
+			std::size_t derecha = centro + 1;
+			bool crece = true;
+			while (crece) {
+				crece = izquierda > 0 && derecha < texto.size() && texto[izquierda - 1] == texto[derecha];
+				if (crece) {
+					izquierda--;
+					derecha++;
+				}
+			}
+			std::size_t longitud = derecha - izquierda;
+			bool esMejor = longitud > mejorLongitud || (longitud == mejorLongitud && izquierda + 1 < mejor.inicio);
+			if (longitud > 0 && esMejor) {
+				mejorLongitud = longitud;
+				mejor.inicio = izquierda + 1;
+				mejor.fin = derecha;
+			}
+		}
+	}
+	return mejor;
+}
+
+/*
  * Atiende el modo de palindromo mas largo.
  * Parametros:
- *   entrada: campo "input" con "transmissions".
+ *   entrada: campo "input" con "transmissions" y, opcional,
+ *            "technique": "manacher" (por defecto) o "center".
  * Retorno: objeto JSON {"ranges": [[inicio, fin] por transmision]} en base 1.
  */
 inline ValorJson resolverPalindromo(const ValorJson &entrada) {
+	std::string tecnica = leerTecnica(entrada, "manacher");
+	if (tecnica != "manacher" && tecnica != "center") {
+		throw std::runtime_error("tecnica de palindrome desconocida: " + tecnica);
+	}
 	ValorJson rangos = crearArreglo();
 	for (const std::string &transmision : leerTransmisiones(entrada.obtenerCampo("transmissions"))) {
-		RangoPalindromo rango = buscarPalindromoMasLargo(transmision);
+		RangoPalindromo rango = tecnica == "manacher" ? buscarPalindromoMasLargo(transmision) : expandirDesdeCentros(transmision);
 		ValorJson rangoJson = crearArreglo();
 		rangoJson.agregarElemento(crearNumero(static_cast<double>(rango.inicio)));
 		rangoJson.agregarElemento(crearNumero(static_cast<double>(rango.fin)));

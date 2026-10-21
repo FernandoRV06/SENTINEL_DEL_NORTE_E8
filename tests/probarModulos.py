@@ -8,8 +8,9 @@ respuesta contra oraculos escritos aparte en Python:
   - matching: str.find.
   - palindrome: expansion desde cada centro (fuerza bruta) en casos chicos.
   - common: programacion dinamica O(n * m) con la regla de empate.
-Incluye casos borde propios, casos aleatorios con el formato de la pagina y
-pruebas de estres con los tamanos de los perfiles lite, normal y huge.
+Incluye casos borde propios, casos aleatorios con el formato de la pagina,
+pruebas de estres con los tamanos de los perfiles lite, normal y huge, y las
+tecnicas alternativas (prim, ford-fulkerson, naive, center, dp).
 Uso: python3 tests/probarModulos.py [semilla]  (compila src/main.cpp antes)
 Autores: Carlos Emiliano Nava Flores (A00842650),
          Luis Enrique Castillo Carrillo (A00842390),
@@ -342,6 +343,13 @@ def hexAleatorio(generador, longitud, alfabeto=HEXADECIMAL):
 	return "".join(generador.choice(alfabeto) for _ in range(longitud))
 
 
+def conTecnica(entrada, tecnica):
+	"""Copia la entrada agregando el campo opcional "technique"."""
+	copia = dict(entrada)
+	copia["technique"] = tecnica
+	return copia
+
+
 def leerPeticion(archivo):
 	"""Lee el campo "input" de una peticion de tests/peticiones."""
 	with open(os.path.join(PETICIONES, archivo)) as entrada:
@@ -441,6 +449,18 @@ def main():
 		t1 = hexAleatorio(generador, mitad) + bloque + hexAleatorio(generador, mitad)
 		t2 = hexAleatorio(generador, mitad) + bloque + hexAleatorio(generador, mitad)
 		probarComun(f"estres {perfil} largo={len(t1)}", {"transmissions": [t1, t2]}, limite, longitudMinima=len(bloque))
+
+	print("Tecnicas alternativas (campo opcional \"technique\", mismos oraculos)")
+	correrSilencioso("mst prim: 300 aleatorios", [lambda n=n: probarMst("", conTecnica(grafoMst(generador, n, 0, densidad=0.4), "prim")) for _ in range(100) for n in (4, 7, 11)])
+	probarMst("mst prim: aristas repetidas y lazos", conTecnica({"nodes": [0, 1, 2], "edges": [{"u": 0, "v": 0, "weight": -5}, {"u": 0, "v": 1, "weight": 9}, {"u": 1, "v": 0, "weight": 2}, {"u": 1, "v": 2, "weight": 3}]}, "prim"))
+	probarMst("mst prim: estres n=5000", conTecnica(grafoMst(generador, 5000, 30000, 1000), "prim"))
+	correrSilencioso("flow ford-fulkerson: 300 aleatorios", [lambda n=n: probarFlujo("", conTecnica(redFlujo(generador, n, 0, densidad=0.18), "ford-fulkerson")) for _ in range(100) for n in (4, 7, 10)])
+	probarFlujo("flow ford-fulkerson: estres n=180", conTecnica(redFlujo(generador, 180, 1800, capacidadMaxima=10000), "ford-fulkerson"))
+	correrSilencioso("matching naive: 300 aleatorios", [lambda: probarFirmas("", conTecnica({"transmissions": [hexAleatorio(generador, 60, "AB"), hexAleatorio(generador, 60, "AB")], "patterns": [hexAleatorio(generador, generador.randint(0, 6), "AB") for _ in range(3)]}, "naive")) for _ in range(300)])
+	correrSilencioso("palindrome center: 400 aleatorios", [lambda: probarPalindromo("", conTecnica({"transmissions": ["", hexAleatorio(generador, generador.randint(1, 80), "AB"), hexAleatorio(generador, generador.randint(1, 80), "ABC")]}, "center")) for _ in range(400)])
+	correrSilencioso("common dp: 400 aleatorios", [lambda: probarComun("", conTecnica({"transmissions": [hexAleatorio(generador, generador.randint(0, 60), "ABC"), hexAleatorio(generador, generador.randint(0, 60), "ABC")]}, "dp")) for _ in range(400)])
+	respuesta, segundos = ejecutar("mst", conTecnica({"nodes": [0], "edges": []}, "inexistente"))
+	reportar("tecnica desconocida -> error", "error" in respuesta, f"respuesta={respuesta}", segundos)
 
 	print(f"\nResumen: {resultados['pasaron']} pasaron, {resultados['fallaron']} fallaron")
 	sys.exit(1 if resultados["fallaron"] else 0)

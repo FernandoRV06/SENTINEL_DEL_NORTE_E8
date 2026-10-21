@@ -5,6 +5,7 @@
  * Usa un arreglo de sufijos de "t1 + separador + t2" (duplicacion de
  * prefijos con ordenamiento por conteo, O(n log n)) y el arreglo LCP de
  * Kasai (O(n)); la respuesta es el mayor LCP entre un sufijo de t1 y uno de t2.
+ * Alternativa para comparar: programacion dinamica O(n * m) con O(m) memoria.
  * Autores: Carlos Emiliano Nava Flores (A00842650),
  *          Luis Enrique Castillo Carrillo (A00842390),
  *          Desiderio Ivan Ortegon Morton (A00840591),
@@ -20,6 +21,7 @@
 #include <limits>
 #include <stdexcept>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "json.h"
@@ -199,9 +201,40 @@ inline std::vector<std::size_t> buscarSubcadenaComun(const std::string &primera,
 }
 
 /*
+ * Encuentra la subcadena comun mas larga con programacion dinamica:
+ * largo[j] es la longitud del sufijo comun mas largo que termina en
+ * primera[i] y segunda[j]. Solo se guarda la fila anterior. O(n * m).
+ * Parametros:
+ *   primera, segunda: transmisiones normalizadas.
+ * Retorno: par {inicio, longitud} con el inicio en base 0 (longitud 0 si no hay).
+ */
+inline std::vector<std::size_t> buscarSubcadenaComunDinamica(const std::string &primera, const std::string &segunda) {
+	std::vector<std::size_t> resultado = {0, 0};
+	std::vector<std::size_t> anterior(segunda.size() + 1, 0);
+	std::vector<std::size_t> actual(segunda.size() + 1, 0);
+	for (std::size_t fila = 0; fila < primera.size(); fila++) {
+		for (std::size_t columna = 0; columna < segunda.size(); columna++) {
+			actual[columna + 1] = 0;
+			if (primera[fila] == segunda[columna]) {
+				actual[columna + 1] = anterior[columna] + 1;
+			}
+			// Las filas avanzan sobre t1: con la misma longitud, la primera que
+			// aparece es la que empieza antes, asi que solo se acepta si es mas larga.
+			if (actual[columna + 1] > resultado[1]) {
+				resultado[1] = actual[columna + 1];
+				resultado[0] = fila + 1 - resultado[1];
+			}
+		}
+		std::swap(anterior, actual);
+	}
+	return resultado;
+}
+
+/*
  * Atiende el modo de subcadena comun mas larga.
  * Parametros:
- *   entrada: campo "input" con "transmissions" (dos cadenas).
+ *   entrada: campo "input" con "transmissions" (dos cadenas) y, opcional,
+ *            "technique": "suffix-array" (por defecto) o "dp".
  * Retorno: objeto JSON {"range": [inicio, fin]} en base 1 sobre la primera
  *          transmision, o [0, 0] si no comparten ningun caracter.
  */
@@ -210,7 +243,15 @@ inline ValorJson resolverSubcadenaComun(const ValorJson &entrada) {
 	if (transmisiones.size() != 2) {
 		throw std::runtime_error("se esperaban exactamente dos transmisiones");
 	}
-	std::vector<std::size_t> encontrada = buscarSubcadenaComun(transmisiones[0], transmisiones[1]);
+	std::string tecnica = leerTecnica(entrada, "suffix-array");
+	std::vector<std::size_t> encontrada;
+	if (tecnica == "suffix-array") {
+		encontrada = buscarSubcadenaComun(transmisiones[0], transmisiones[1]);
+	} else if (tecnica == "dp") {
+		encontrada = buscarSubcadenaComunDinamica(transmisiones[0], transmisiones[1]);
+	} else {
+		throw std::runtime_error("tecnica de common desconocida: " + tecnica);
+	}
 	double inicio = 0.0;
 	double fin = 0.0;
 	if (encontrada[1] > 0) {

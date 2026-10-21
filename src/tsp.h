@@ -21,6 +21,7 @@
 #include <cstddef>
 #include <limits>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 #include "json.h"
@@ -28,6 +29,8 @@
 // Mayor numero de centrales que se resuelve de forma exacta: Held-Karp usa
 // O(2^n * n) memoria y O(2^n * n^2) tiempo (16 centrales: ~16 millones de pasos).
 const std::size_t LIMITE_EXACTO_TSP = 16;
+// Tope al forzar Held-Karp en los benchmarks (20 centrales: ~330 MB).
+const std::size_t MAXIMO_EXACTO_FORZADO_TSP = 20;
 // Mejora minima para aceptar un cambio 2-opt (evita ciclos por redondeo).
 const double TOLERANCIA_TSP = 1e-9;
 // Tope de pasadas completas de 2-opt para acotar el tiempo en casos grandes.
@@ -226,22 +229,36 @@ inline std::vector<std::size_t> resolverTspAproximado(const std::vector<std::vec
 }
 
 /*
- * Atiende el modo "tsp": elige el metodo exacto para instancias chicas y el
- * aproximado para las grandes.
+ * Atiende el modo "tsp". Por defecto ("auto") usa el metodo exacto para
+ * instancias chicas y el aproximado para las grandes; para los benchmarks
+ * se puede forzar uno: "held-karp", "nearest-neighbor" (sin mejora) o
+ * "2-opt" (vecino mas cercano + 2-opt).
  * Parametros:
- *   entrada: campo "input" de la peticion, con la matriz "distances".
+ *   entrada: campo "input" de la peticion, con la matriz "distances" y,
+ *            opcional, "technique".
  * Retorno: objeto JSON {"cost": distancia, "route": [0, ..., 0]}.
  */
 inline ValorJson resolverTsp(const ValorJson &entrada) {
 	std::vector<std::vector<double>> distancias = leerDistanciasTsp(entrada);
+	std::string tecnica = leerTecnica(entrada, "auto");
+	if (tecnica == "auto") {
+		tecnica = distancias.size() > LIMITE_EXACTO_TSP ? "2-opt" : "held-karp";
+	}
+	if (tecnica == "held-karp" && distancias.size() > MAXIMO_EXACTO_FORZADO_TSP) {
+		throw std::runtime_error("held-karp solo acepta hasta 20 centrales (memoria O(2^n * n))");
+	}
 	// Sin centrales la ruta queda como [0] (n + 1 = 1 nodo); con una, [0, 0].
 	std::vector<std::size_t> ruta;
-	if (distancias.size() > LIMITE_EXACTO_TSP) {
-		ruta = resolverTspAproximado(distancias);
-	} else if (distancias.size() >= 2) {
-		ruta = resolverTspExacto(distancias);
-	} else if (distancias.size() == 1) {
+	if (distancias.size() == 1) {
 		ruta.push_back(0);
+	} else if (distancias.size() >= 2 && tecnica == "held-karp") {
+		ruta = resolverTspExacto(distancias);
+	} else if (distancias.size() >= 2 && tecnica == "2-opt") {
+		ruta = resolverTspAproximado(distancias);
+	} else if (distancias.size() >= 2 && tecnica == "nearest-neighbor") {
+		ruta = construirVecinoMasCercano(distancias);
+	} else if (tecnica != "held-karp" && tecnica != "2-opt" && tecnica != "nearest-neighbor") {
+		throw std::runtime_error("tecnica de tsp desconocida: " + tecnica);
 	}
 	double costo = calcularCostoRutaTsp(distancias, ruta);
 	ValorJson rutaJson = crearArreglo();

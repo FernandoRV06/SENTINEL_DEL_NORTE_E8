@@ -137,9 +137,12 @@ def perimetroCirculo(nombre, distancias):
 	return sum(distancias[porPosicion[i]][porPosicion[(i + 1) % cantidad]] for i in range(cantidad))
 
 
-def probarTsp(nombre, distancias, exigirOptimo=True, costoEsperado=None):
+def probarTsp(nombre, distancias, exigirOptimo=True, costoEsperado=None, tecnica=None):
 	"""Corre un caso de TSP y lo valida contra el oraculo que aplique."""
-	respuesta, segundos = ejecutar("tsp", {"distances": distancias})
+	entrada = {"distances": distancias}
+	if tecnica is not None:
+		entrada["technique"] = tecnica
+	respuesta, segundos = ejecutar("tsp", entrada)
 	correcto, motivo, costoRuta = validarRutaTsp(distancias, respuesta)
 	cantidad = len(distancias)
 	detalle = f"n={cantidad}"
@@ -247,9 +250,12 @@ def validarVoronoi(nombre, sitios, limites, respuesta, muestrear):
 	return True, ""
 
 
-def probarVoronoi(nombre, sitios, limites, muestrear=True):
+def probarVoronoi(nombre, sitios, limites, muestrear=True, tecnica=None):
 	"""Corre un caso de Voronoi y lo valida."""
-	respuesta, segundos = ejecutar("voronoi", {"sites": sitios, "bounds": limites})
+	entrada = {"sites": sitios, "bounds": limites}
+	if tecnica is not None:
+		entrada["technique"] = tecnica
+	respuesta, segundos = ejecutar("voronoi", entrada)
 	correcto, motivo = validarVoronoi(nombre, sitios, limites, respuesta, muestrear)
 	reportar(nombre, correcto, motivo or f"sitios={len(sitios)}", segundos)
 	return segundos
@@ -295,6 +301,8 @@ def main():
 		sys.exit(1)
 	generador = random.Random(int(sys.argv[1]) if len(sys.argv) > 1 else 2038)
 
+	with open(os.path.join(PETICIONES, "tsp_circulo_40.json")) as entrada:
+		circulo40 = json.load(entrada)["input"]["distances"]
 	print("TSP: casos propios (tests/peticiones/tsp*.json)")
 	for archivo in sorted(f for f in os.listdir(PETICIONES) if f.startswith("tsp")):
 		with open(os.path.join(PETICIONES, archivo)) as entrada:
@@ -346,6 +354,21 @@ def main():
 		segundos = probarVoronoi(f"estres {perfil} sitios={sitios}", sitiosAleatorios(generador, sitios), [0, 0, 100000, 100000], muestrear=False)
 		revisarTiempo(perfil, segundos, limite)
 	probarVoronoi("estres extra sitios=2000", sitiosAleatorios(generador, 2000), [0, 0, 100000, 100000], muestrear=False)
+
+	print("Tecnicas forzadas (campo opcional \"technique\")")
+	for cantidad in (2, 5, 9, 14, 18):
+		probarTsp(f"held-karp forzado n={cantidad}", matrizAleatoria(generador, cantidad, 1, 1000), tecnica="held-karp")
+	for cantidad in (1, 2, 9, 60, 450):
+		probarTsp(f"nearest-neighbor n={cantidad}", matrizCircular(generador, cantidad), exigirOptimo=False, tecnica="nearest-neighbor")
+		probarTsp(f"2-opt forzado n={cantidad}", matrizCircular(generador, cantidad), exigirOptimo=False, tecnica="2-opt")
+	probarTsp("2-opt en circulo de 40 (llega al optimo)", circulo40, costoEsperado=perimetroCirculo("", circulo40), tecnica="2-opt")
+	respuesta, segundos = ejecutar("tsp", {"distances": matrizAleatoria(generador, 21), "technique": "held-karp"})
+	reportar("held-karp con 21 nodos -> error", "error" in respuesta, f"respuesta={respuesta}", segundos)
+	for archivo in sorted(f for f in os.listdir(PETICIONES) if f.startswith("voronoi")):
+		with open(os.path.join(PETICIONES, archivo)) as entrada:
+			datos = json.load(entrada)["input"]
+		probarVoronoi(f"sin poda: {archivo}", datos["sites"], datos["bounds"], tecnica="half-plane-naive")
+	probarVoronoi("sin poda: estres sitios=500", sitiosAleatorios(generador, 500), [0, 0, 100000, 100000], muestrear=False, tecnica="half-plane-naive")
 
 	print(f"\nResumen: {resultados['pasaron']} pasaron, {resultados['fallaron']} fallaron")
 	sys.exit(1 if resultados["fallaron"] else 0)

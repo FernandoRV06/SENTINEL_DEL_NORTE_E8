@@ -104,6 +104,23 @@ private:
 };
 
 /*
+ * Lee el campo opcional "technique" de una peticion. Permite elegir la
+ * tecnica alternativa de cada modo para los benchmarks; el autograder no
+ * lo envia, asi que siempre se usa la tecnica principal.
+ * Parametros:
+ *   entrada: campo "input" de la peticion.
+ *   porDefecto: nombre de la tecnica principal del modo.
+ * Retorno: el nombre de la tecnica pedida, o porDefecto si no se indico.
+ */
+inline std::string leerTecnica(const ValorJson &entrada, const std::string &porDefecto) {
+	std::string tecnica = porDefecto;
+	if (entrada.tieneCampo("technique")) {
+		tecnica = entrada.obtenerCampo("technique").texto;
+	}
+	return tecnica;
+}
+
+/*
  * Crea un valor JSON de tipo numero.
  * Parametros:
  *   numero: cantidad que se guarda.
