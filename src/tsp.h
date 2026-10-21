@@ -18,9 +18,7 @@
 #include <stdexcept>
 #include <vector>
 
-#include "json.hpp"
-
-using Json = nlohmann::json;
+#include "json.h"
 
 // Mayor numero de centrales que se resuelve de forma exacta: Held-Karp usa
 // O(2^n * n) memoria y O(2^n * n^2) tiempo (16 centrales: ~16 millones de pasos).
@@ -36,11 +34,16 @@ const int MAXIMO_PASADAS_2OPT = 1000;
  *   entrada: campo "input" de la peticion, con el campo "distances".
  * Retorno: la matriz como vector de vectores; lanza una excepcion si no es cuadrada.
  */
-inline std::vector<std::vector<double>> leerDistanciasTsp(const Json &entrada) {
-	std::vector<std::vector<double>> distancias = entrada.at("distances").get<std::vector<std::vector<double>>>();
-	for (const std::vector<double> &fila : distancias) {
-		if (fila.size() != distancias.size()) {
+inline std::vector<std::vector<double>> leerDistanciasTsp(const ValorJson &entrada) {
+	const ValorJson &filas = entrada.obtenerCampo("distances");
+	std::size_t cantidad = filas.elementos.size();
+	std::vector<std::vector<double>> distancias(cantidad, std::vector<double>(cantidad, 0.0));
+	for (std::size_t origen = 0; origen < cantidad; origen++) {
+		if (filas.elementos[origen].elementos.size() != cantidad) {
 			throw std::runtime_error("la matriz de distancias no es cuadrada");
+		}
+		for (std::size_t destino = 0; destino < cantidad; destino++) {
+			distancias[origen][destino] = filas.elementos[origen].elementos[destino].numero;
 		}
 	}
 	return distancias;
@@ -224,7 +227,7 @@ inline std::vector<std::size_t> resolverTspAproximado(const std::vector<std::vec
  *   entrada: campo "input" de la peticion, con la matriz "distances".
  * Retorno: objeto JSON {"cost": distancia, "route": [0, ..., 0]}.
  */
-inline Json resolverTsp(const Json &entrada) {
+inline ValorJson resolverTsp(const ValorJson &entrada) {
 	std::vector<std::vector<double>> distancias = leerDistanciasTsp(entrada);
 	// Sin centrales la ruta queda como [0] (n + 1 = 1 nodo); con una, [0, 0].
 	std::vector<std::size_t> ruta;
@@ -236,8 +239,14 @@ inline Json resolverTsp(const Json &entrada) {
 		ruta.push_back(0);
 	}
 	double costo = calcularCostoRutaTsp(distancias, ruta);
-	ruta.push_back(0);
-	Json respuesta = {{"cost", costo}, {"route", ruta}};
+	ValorJson rutaJson = crearArreglo();
+	for (std::size_t nodo : ruta) {
+		rutaJson.agregarElemento(crearNumero(static_cast<double>(nodo)));
+	}
+	rutaJson.agregarElemento(crearNumero(0.0));
+	ValorJson respuesta = crearObjeto();
+	respuesta.agregarCampo("cost", crearNumero(costo));
+	respuesta.agregarCampo("route", rutaJson);
 	return respuesta;
 }
 

@@ -7,9 +7,7 @@
 #ifndef SUBCADENA_COMUN_H
 #define SUBCADENA_COMUN_H
 
-#include "json.hpp"
-
-using Json = nlohmann::json;
+#include "json.h"
 
 #include "transmision.h"
 
@@ -20,8 +18,10 @@ using Json = nlohmann::json;
  *   entrada: campo "input" de la peticion.
  * Retorno: objeto JSON con la respuesta del modo.
  */
-inline Json resolverSubcadenaComun(const Json &entrada) {
-	Json respuesta = {{"estado", "pendiente"}, {"camposRecibidos", entrada.size()}};
+inline ValorJson resolverSubcadenaComun(const ValorJson &entrada) {
+	ValorJson respuesta = crearObjeto();
+	respuesta.agregarCampo("estado", crearTexto("pendiente"));
+	respuesta.agregarCampo("camposRecibidos", crearNumero(static_cast<double>(entrada.llaves.size())));
 	return respuesta;
 }
 

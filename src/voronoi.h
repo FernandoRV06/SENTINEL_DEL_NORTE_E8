@@ -16,9 +16,7 @@
 #include <stdexcept>
 #include <vector>
 
-#include "json.hpp"
-
-using Json = nlohmann::json;
+#include "json.h"
 
 // Margen para decidir de que lado de una mediatriz queda un vertice.
 const double TOLERANCIA_VORONOI = 1e-9;
@@ -37,13 +35,13 @@ struct PuntoVoronoi {
  *   valor: arreglo JSON con dos numeros.
  * Retorno: el punto leido; lanza una excepcion si no tiene dos coordenadas.
  */
-inline PuntoVoronoi leerPuntoVoronoi(const Json &valor) {
-	if (!valor.is_array() || valor.size() < 2) {
+inline PuntoVoronoi leerPuntoVoronoi(const ValorJson &valor) {
+	if (valor.elementos.size() < 2) {
 		throw std::runtime_error("cada sitio debe tener coordenadas [x, y]");
 	}
 	PuntoVoronoi punto;
-	punto.x = valor.at(0).get<double>();
-	punto.y = valor.at(1).get<double>();
+	punto.x = valor.elementos[0].numero;
+	punto.y = valor.elementos[1].numero;
 	return punto;
 }
 
@@ -151,15 +149,15 @@ inline std::vector<PuntoVoronoi> construirCelda(const std::vector<PuntoVoronoi> 
  *            "bounds" ([xMin, yMin, xMax, yMax]).
  * Retorno: objeto JSON {"cells": [[[x, y], ...], ...]}.
  */
-inline Json resolverVoronoi(const Json &entrada) {
-	std::vector<double> limites = entrada.at("bounds").get<std::vector<double>>();
-	if (limites.size() != 4) {
+inline ValorJson resolverVoronoi(const ValorJson &entrada) {
+	const ValorJson &limites = entrada.obtenerCampo("bounds");
+	if (limites.elementos.size() != 4) {
 		throw std::runtime_error("bounds debe ser [xMin, yMin, xMax, yMax]");
 	}
-	double xMinimo = limites[0];
-	double yMinimo = limites[1];
-	double xMaximo = limites[2];
-	double yMaximo = limites[3];
+	double xMinimo = limites.elementos[0].numero;
+	double yMinimo = limites.elementos[1].numero;
+	double xMaximo = limites.elementos[2].numero;
+	double yMaximo = limites.elementos[3].numero;
 	std::vector<PuntoVoronoi> rectangulo(4);
 	rectangulo[0].x = xMinimo;
 	rectangulo[0].y = yMinimo;
@@ -170,18 +168,22 @@ inline Json resolverVoronoi(const Json &entrada) {
 	rectangulo[3].x = xMinimo;
 	rectangulo[3].y = yMaximo;
 	std::vector<PuntoVoronoi> sitios;
-	for (const Json &sitio : entrada.at("sites")) {
+	for (const ValorJson &sitio : entrada.obtenerCampo("sites").elementos) {
 		sitios.push_back(leerPuntoVoronoi(sitio));
 	}
-	Json celdas = Json::array();
+	ValorJson celdas = crearArreglo();
 	for (std::size_t indice = 0; indice < sitios.size(); indice++) {
-		Json celdaJson = Json::array();
+		ValorJson celdaJson = crearArreglo();
 		for (const PuntoVoronoi &vertice : construirCelda(sitios, indice, rectangulo)) {
-			celdaJson.push_back({vertice.x, vertice.y});
+			ValorJson verticeJson = crearArreglo();
+			verticeJson.agregarElemento(crearNumero(vertice.x));
+			verticeJson.agregarElemento(crearNumero(vertice.y));
+			celdaJson.agregarElemento(verticeJson);
 		}
-		celdas.push_back(celdaJson);
+		celdas.agregarElemento(celdaJson);
 	}
-	Json respuesta = {{"cells", celdas}};
+	ValorJson respuesta = crearObjeto();
+	respuesta.agregarCampo("cells", celdas);
 	return respuesta;
 }
 

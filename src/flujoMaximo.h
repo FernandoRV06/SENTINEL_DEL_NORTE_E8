@@ -7,9 +7,7 @@
 #ifndef FLUJO_MAXIMO_H
 #define FLUJO_MAXIMO_H
 
-#include "json.hpp"
-
-using Json = nlohmann::json;
+#include "json.h"
 
 /*
  * Atiende el modo de flujo maximo. Version provisional: solo confirma que
@@ -18,8 +16,10 @@ using Json = nlohmann::json;
  *   entrada: campo "input" de la peticion.
  * Retorno: objeto JSON con la respuesta del modo.
  */
-inline Json resolverFlujoMaximo(const Json &entrada) {
-	Json respuesta = {{"estado", "pendiente"}, {"camposRecibidos", entrada.size()}};
+inline ValorJson resolverFlujoMaximo(const ValorJson &entrada) {
+	ValorJson respuesta = crearObjeto();
+	respuesta.agregarCampo("estado", crearTexto("pendiente"));
+	respuesta.agregarCampo("camposRecibidos", crearNumero(static_cast<double>(entrada.llaves.size())));
 	return respuesta;
 }
 
