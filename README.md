@@ -50,7 +50,7 @@ Pendiente de completar: capas de datos, núcleo en C++, módulos y aplicación.
 
 ## Dependencias
 
-Núcleo: solo la biblioteca estándar de C++17. El autograder de la página compila sin soporte de excepciones, por eso el código no usa `try`, `catch` ni `throw` fuera de `main.cpp` y `json.h`. Aplicación: pendiente.
+Núcleo: solo la biblioteca estándar de C++17. El autograder de la página compila sin soporte de excepciones, por eso convierte cada `throw` en un `abort` y elimina los `try` y `catch`. El código solo lanza errores ante entradas inválidas, y no debe escribir esas palabras en comentarios. Aplicación: pendiente.
 
 ## Datos
 
