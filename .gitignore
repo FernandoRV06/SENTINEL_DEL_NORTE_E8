@@ -12,3 +12,6 @@ Thumbs.db
 
 # El ZIP de entrega se arma al final, no se guarda en el repositorio
 *.zip
+
+# Cache de Python
+__pycache__/

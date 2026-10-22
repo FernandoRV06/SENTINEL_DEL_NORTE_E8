@@ -1,13 +1,19 @@
-Equipo: Sentinela del Norte · TC2038
+Equipo: Sentinela del Norte (TC2038)
 
 Integrante 1: Carlos Emiliano Nava Flores (A00842650)
-Contribuciones: MST y TSP (caminos mas cortos, Held-Karp, vecino mas cercano).
+Tareas asignadas: MST y TSP (Kruskal, Prim, Held-Karp y vecino mas cercano),
+sus pruebas y su seccion del reporte de reflexion.
 
 Integrante 2: Luis Enrique Castillo Carrillo (A00842390)
-Contribuciones: Flujo maximo y diagramas de Voronoi.
+Tareas asignadas: flujo maximo y diagramas de Voronoi (Edmonds-Karp,
+Ford-Fulkerson y recorte por semiplanos), sus pruebas y su seccion del
+reporte de reflexion.
 
 Integrante 3: Desiderio Iván Ortegón Mortón (A00840591)
-Contribuciones: Deteccion de firmas, palindromo mas largo y subcadena comun.
+Tareas asignadas: deteccion de firmas, palindromo mas largo y subcadena comun
+(KMP, Manacher y arreglo de sufijos), sus pruebas y su seccion del reporte
+de reflexion.
 
 Integrante 4: Fernando Robles Vidrio (A00843290)
-Contribuciones: Lector JSON, main.cpp, aplicacion, pruebas automatizadas y benchmarks.
+Tareas asignadas: integracion (main.cpp y lector JSON), aplicacion SENTINEL
+Digital Twin, pruebas automatizadas, benchmarks y documentacion.

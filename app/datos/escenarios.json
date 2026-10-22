@@ -1,0 +1,118 @@
+[
+ {
+  "nombre": "Demostración GÉANT: Londres a Atenas",
+  "descripcion": "El escenario del laboratorio de la página: flujo de Londres a Atenas con todos los enlaces activos.",
+  "flujo": {
+   "origen": "UK",
+   "destino": "GR"
+  },
+  "enlacesCaidos": [],
+  "transmisiones": [
+   "AABCDCBA12FFABBA",
+   "00BCDCBAFFABBA77"
+  ],
+  "origenTransmisiones": "Ejemplo de la página del caso",
+  "firmas": [
+   "ABBA",
+   "FF",
+   "DEAD"
+  ],
+  "asociacion": [
+   {
+    "transmision": "transmission1.txt",
+    "enlace": [
+     "AT",
+     "CH"
+    ],
+    "escenario": "Tráfico benigno"
+   },
+   {
+    "transmision": "transmission2.txt",
+    "enlace": [
+     "AT",
+     "DE"
+    ],
+    "escenario": "Tráfico DDoS"
+   }
+  ]
+ },
+ {
+  "nombre": "Lisboa a Estocolmo",
+  "descripcion": "Flujo entre los extremos suroeste y norte de la red, con transmisiones más largas para probar la consola.",
+  "flujo": {
+   "origen": "PT",
+   "destino": "SE"
+  },
+  "enlacesCaidos": [],
+  "transmisiones": [
+   "2F23075B193AD00FFEAB2B2DB4B9F3FB3132ED8BD01CE90EBED06C421E75F2408809D8E80F1A6C95DEADBEEF284F055038E22EA5A81F8EEFAB3FC535898446CF673D4C69267CA93347D650253361234F248A511DF7982F0F3F5A350A05C595F4458682CA5729519C25DCB593BE9AFBF45495E2CE14613FF62C26FF316418CF8360860E338743A212B4D8C40741D2A23F70467942C1538DF42902914",
+   "10E738C293B2633B37DB70C378600A3438219C585CE70AE49338D347EE684F248A511DF7982F0F3F5A35B6B9A7B21188C3BBF7905414E09AF8B3F606975786509E84FEB7DBCA735917D0DE7EF7C9116966E5F9CC640FCF9B86F35F146F48C8EA01CAFEBABECFEA3E97D3A8C42A17A902F15BACD3160DD177CCA9B21225CC6D10B86B1B4472F03AE13DC4139D07"
+  ],
+  "origenTransmisiones": "Sintéticas (semilla 2038), no provienen de CIC-IDS2017",
+  "firmas": [
+   "DEADBEEF",
+   "CAFEBABE",
+   "0000"
+  ],
+  "asociacion": [
+   {
+    "transmision": "transmission1.txt",
+    "enlace": [
+     "AT",
+     "CH"
+    ],
+    "escenario": "Tráfico benigno"
+   },
+   {
+    "transmision": "transmission2.txt",
+    "enlace": [
+     "AT",
+     "DE"
+    ],
+    "escenario": "Tráfico DDoS"
+   }
+  ]
+ },
+ {
+  "nombre": "Caída del enlace Austria–Alemania",
+  "descripcion": "Se cae el enlace Austria–Alemania. La red lo absorbe: el flujo se redirige por otros enlaces y se mantiene en 30 Gbps.",
+  "flujo": {
+   "origen": "UK",
+   "destino": "GR"
+  },
+  "enlacesCaidos": [
+   [
+    "AT",
+    "DE"
+   ]
+  ],
+  "transmisiones": [
+   "AABCDCBA12FFABBA",
+   "00BCDCBAFFABBA77"
+  ],
+  "origenTransmisiones": "Ejemplo de la página del caso",
+  "firmas": [
+   "ABBA",
+   "FF",
+   "DEAD"
+  ],
+  "asociacion": [
+   {
+    "transmision": "transmission1.txt",
+    "enlace": [
+     "AT",
+     "CH"
+    ],
+    "escenario": "Tráfico benigno"
+   },
+   {
+    "transmision": "transmission2.txt",
+    "enlace": [
+     "AT",
+     "DE"
+    ],
+    "escenario": "Tráfico DDoS"
+   }
+  ]
+ }
+]

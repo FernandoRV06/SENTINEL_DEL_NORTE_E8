@@ -89,6 +89,17 @@ public:
 		return total;
 	}
 
+	/*
+	 * Consulta cuanto flujo pasa por una arista despues de calcular el flujo.
+	 * La reversa de la arista empieza en 0 y acumula lo que se envia por ella.
+	 * Parametros:
+	 *   indice: posicion de la arista en el orden en que se agrego.
+	 * Retorno: el flujo que pasa por esa arista.
+	 */
+	double obtenerFlujoArista(std::size_t indice) const {
+		return capacidad[2 * indice + 1];
+	}
+
 private:
 	std::vector<std::size_t> primera;
 	std::vector<std::size_t> siguiente;
@@ -164,8 +175,10 @@ inline std::size_t leerNodoFlujo(const ValorJson &valor, std::size_t cantidad) {
  * Parametros:
  *   entrada: campo "input" con "n", "edges" ([{"u", "v", "capacity"}, ...]),
  *            "source", "sink" y, opcional, "technique": "edmonds-karp"
- *            (por defecto) o "ford-fulkerson".
- * Retorno: objeto JSON {"flow": valor}.
+ *            (por defecto) o "ford-fulkerson". Con el campo opcional
+ *            "detail": true tambien reporta el flujo de cada arista.
+ * Retorno: objeto JSON {"flow": valor}; con "detail", ademas
+ *   "edgeFlows": [flujo de cada arista, en el orden de "edges"].
  */
 inline ValorJson resolverFlujoMaximo(const ValorJson &entrada) {
 	std::size_t cantidad = static_cast<std::size_t>(entrada.obtenerCampo("n").numero);
@@ -183,6 +196,15 @@ inline ValorJson resolverFlujoMaximo(const ValorJson &entrada) {
 	}
 	ValorJson respuesta = crearObjeto();
 	respuesta.agregarCampo("flow", crearNumero(red.calcularFlujoMaximo(fuente, sumidero, tecnica == "edmonds-karp")));
+	bool conDetalle = entrada.tieneCampo("detail") && entrada.obtenerCampo("detail").booleano;
+	if (conDetalle) {
+		ValorJson flujos = crearArreglo();
+		std::size_t totalAristas = entrada.obtenerCampo("edges").elementos.size();
+		for (std::size_t indice = 0; indice < totalAristas; indice++) {
+			flujos.agregarElemento(crearNumero(red.obtenerFlujoArista(indice)));
+		}
+		respuesta.agregarCampo("edgeFlows", flujos);
+	}
 	return respuesta;
 }
 

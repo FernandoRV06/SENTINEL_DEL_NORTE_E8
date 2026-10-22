@@ -1,0 +1,160 @@
+<!doctype html>
+<!--
+  Descripcion: pagina principal del SENTINEL Digital Twin. Contiene las
+  cuatro vistas que pide el caso: Network Explorer, Algorithm Laboratory,
+  Cybersecurity Console y Scenario Manager. Cada resultado se pide al
+  nucleo en C++ por medio de app/servidor.py.
+  Autores: Carlos Emiliano Nava Flores (A00842650),
+           Luis Enrique Castillo Carrillo (A00842390),
+           Desiderio Ivan Ortegon Morton (A00840591),
+           Fernando Robles Vidrio (A00843290)
+  Fecha de creacion: 21/10/2026
+-->
+<html lang="es">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>SENTINEL Digital Twin</title>
+	<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%226%22 fill=%22%231f5fd6%22/%3E%3C/svg%3E">
+	<link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+	<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+	<header class="encabezado">
+		<div class="marca">
+			<span class="marca-titulo">SENTINEL Digital Twin</span>
+			<span class="marca-subtitulo">Escenario: <strong id="nombreEscenario">—</strong></span>
+		</div>
+		<nav class="pestanas" role="tablist">
+			<button class="pestana activa" data-vista="explorador" role="tab">Network Explorer</button>
+			<button class="pestana" data-vista="laboratorio" role="tab">Algorithm Laboratory</button>
+			<button class="pestana" data-vista="consola" role="tab">Cybersecurity Console</button>
+			<button class="pestana" data-vista="escenarios" role="tab">Scenario Manager</button>
+		</nav>
+		<div class="estado-servidor" id="estadoServidor">Conectando…</div>
+	</header>
+
+	<main>
+		<!-- Vista 1: Network Explorer -->
+		<section class="vista activa" id="vista-explorador">
+			<aside class="panel">
+				<p class="intro">El mapa de la red. Elige qué algoritmo quieres ver sobre ella.</p>
+				<div class="opciones" id="opcionesCapa">
+					<label><input type="radio" name="capa" value="red" checked> La red</label>
+					<label><input type="radio" name="capa" value="mst"> MST · conectar todo al menor costo</label>
+					<label><input type="radio" name="capa" value="tsp"> TSP · ruta del técnico</label>
+					<label><input type="radio" name="capa" value="flujo"> Flujo máximo</label>
+					<label><input type="radio" name="capa" value="voronoi"> Voronoi · zona de cada central</label>
+				</div>
+				<div class="explicacion" id="explicacion"></div>
+			</aside>
+			<div class="mapa" id="mapa"></div>
+		</section>
+
+		<!-- Vista 2: Algorithm Laboratory -->
+		<section class="vista" id="vista-laboratorio">
+			<aside class="panel">
+				<p class="intro">Corre las técnicas de un problema sobre los mismos datos y compara cuánto tarda cada una.</p>
+				<label class="campo">Problema
+					<select id="labModo"></select>
+				</label>
+				<label class="campo">Datos
+					<select id="labFuente">
+						<option value="escenario">Red del escenario (pequeña)</option>
+						<option value="aleatoria">Datos aleatorios grandes</option>
+					</select>
+				</label>
+				<label class="campo" id="labCampoTamano">Tamaño (n)
+					<input type="number" id="labTamano" min="2" value="200">
+				</label>
+				<button class="boton" id="labComparar">Comparar</button>
+			</aside>
+			<div class="contenido">
+				<p class="explicacion-problema" id="labDescripcion"></p>
+				<table class="tabla" id="labTabla">
+					<thead><tr><th>Técnica</th><th>Tiempo</th><th>Resultado</th><th>¿Qué significa?</th></tr></thead>
+					<tbody><tr><td colspan="4" class="ayuda">Presiona “Comparar”.</td></tr></tbody>
+				</table>
+				<details class="detalles">
+					<summary>Ver el JSON enviado al núcleo y su respuesta</summary>
+					<h3>Petición</h3>
+					<pre id="labPeticion" class="codigo salida"></pre>
+					<h3>Respuesta de la última técnica</h3>
+					<pre id="labRespuesta" class="codigo salida"></pre>
+				</details>
+			</div>
+		</section>
+
+		<!-- Vista 3: Cybersecurity Console -->
+		<section class="vista" id="vista-consola">
+			<aside class="panel">
+				<p class="intro">Busca rastros de ataques en dos transmisiones.</p>
+				<label class="campo">Transmisión 1
+					<textarea id="conT1" class="codigo" rows="4" spellcheck="false"></textarea>
+				</label>
+				<label class="campo">Transmisión 2
+					<textarea id="conT2" class="codigo" rows="4" spellcheck="false"></textarea>
+				</label>
+				<label class="campo">Firmas de malware a buscar
+					<span class="fila-firmas">
+						<input id="conF1" class="codigo-linea" aria-label="Firma 1">
+						<input id="conF2" class="codigo-linea" aria-label="Firma 2">
+						<input id="conF3" class="codigo-linea" aria-label="Firma 3">
+					</span>
+				</label>
+				<button class="boton" id="conAnalizar">Analizar</button>
+				<details class="detalles">
+					<summary>Cargar transmisiones desde archivos .txt</summary>
+					<label class="campo">transmission1.txt <input type="file" accept=".txt" data-destino="conT1" class="archivo"></label>
+					<label class="campo">transmission2.txt <input type="file" accept=".txt" data-destino="conT2" class="archivo"></label>
+				</details>
+			</aside>
+			<div class="contenido">
+				<p class="advertencia" id="conAviso"></p>
+				<div id="conResultados"><p class="ayuda">Presiona “Analizar”.</p></div>
+				<details class="detalles">
+					<summary>Ver la salida en el formato de texto del caso</summary>
+					<pre id="conSalida" class="codigo salida"></pre>
+				</details>
+			</div>
+		</section>
+
+		<!-- Vista 4: Scenario Manager -->
+		<section class="vista" id="vista-escenarios">
+			<aside class="panel">
+				<p class="intro">Elige la situación que se analiza en las demás pestañas.</p>
+				<div id="listaEscenarios"></div>
+				<details class="detalles">
+					<summary>Cargar o guardar un escenario</summary>
+					<label class="campo">Cargar escenario (.json)
+						<input type="file" accept=".json" id="escArchivo" class="archivo">
+					</label>
+					<button class="boton secundario" id="escDescargar">Descargar escenario actual</button>
+				</details>
+			</aside>
+			<div class="contenido">
+				<h2>Flujo máximo</h2>
+				<div class="fila">
+					<label class="campo">Desde <select id="escOrigen"></select></label>
+					<label class="campo">Hasta <select id="escDestino"></select></label>
+				</div>
+				<h2>Enlaces</h2>
+				<p class="ayuda">Desmarca un enlace para simular que se cayó.</p>
+				<div class="enlaces" id="escEnlaces"></div>
+				<div class="botones">
+					<button class="boton" id="escRecalcular">Recalcular</button>
+				</div>
+				<p class="ayuda" id="escEstado"></p>
+			</div>
+		</section>
+	</main>
+
+	<script src="vendor/leaflet/leaflet.js"></script>
+	<script src="js/api.js"></script>
+	<script src="js/explorador.js"></script>
+	<script src="js/laboratorio.js"></script>
+	<script src="js/consola.js"></script>
+	<script src="js/escenarios.js"></script>
+	<script src="js/principal.js"></script>
+</body>
+</html>

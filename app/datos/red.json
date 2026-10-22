@@ -1,0 +1,273 @@
+{
+ "descripcion": "Red de demostracion basada en la topologia GEANT del laboratorio de la pagina del caso (14 centrales, 24 enlaces). Distancias calculadas con la formula de haversine; capacidades del laboratorio (10, 40 o 100 Gbps). Reemplazable por los archivos oficiales nodes.csv, edges.csv y capacities.csv.",
+ "nodos": [
+  {
+   "id": 0,
+   "codigo": "AT",
+   "nombre": "Viena",
+   "lat": 48.21,
+   "lon": 16.37
+  },
+  {
+   "id": 1,
+   "codigo": "CH",
+   "nombre": "Ginebra",
+   "lat": 46.2,
+   "lon": 6.14
+  },
+  {
+   "id": 2,
+   "codigo": "DE",
+   "nombre": "Frankfurt",
+   "lat": 50.11,
+   "lon": 8.68
+  },
+  {
+   "id": 3,
+   "codigo": "FR",
+   "nombre": "Paris",
+   "lat": 48.86,
+   "lon": 2.35
+  },
+  {
+   "id": 4,
+   "codigo": "UK",
+   "nombre": "Londres",
+   "lat": 51.51,
+   "lon": -0.13
+  },
+  {
+   "id": 5,
+   "codigo": "NL",
+   "nombre": "Amsterdam",
+   "lat": 52.37,
+   "lon": 4.9
+  },
+  {
+   "id": 6,
+   "codigo": "IT",
+   "nombre": "Milan",
+   "lat": 45.46,
+   "lon": 9.19
+  },
+  {
+   "id": 7,
+   "codigo": "ES",
+   "nombre": "Madrid",
+   "lat": 40.42,
+   "lon": -3.7
+  },
+  {
+   "id": 8,
+   "codigo": "PL",
+   "nombre": "Poznan",
+   "lat": 52.41,
+   "lon": 16.93
+  },
+  {
+   "id": 9,
+   "codigo": "CZ",
+   "nombre": "Praga",
+   "lat": 50.08,
+   "lon": 14.44
+  },
+  {
+   "id": 10,
+   "codigo": "HU",
+   "nombre": "Budapest",
+   "lat": 47.5,
+   "lon": 19.04
+  },
+  {
+   "id": 11,
+   "codigo": "SE",
+   "nombre": "Estocolmo",
+   "lat": 59.33,
+   "lon": 18.07
+  },
+  {
+   "id": 12,
+   "codigo": "PT",
+   "nombre": "Lisboa",
+   "lat": 38.72,
+   "lon": -9.14
+  },
+  {
+   "id": 13,
+   "codigo": "GR",
+   "nombre": "Atenas",
+   "lat": 37.98,
+   "lon": 23.73
+  }
+ ],
+ "enlaces": [
+  {
+   "u": 0,
+   "v": 1,
+   "distanciaKm": 804,
+   "costo": 804,
+   "capacidadGbps": 10
+  },
+  {
+   "u": 0,
+   "v": 2,
+   "distanciaKm": 597,
+   "costo": 597,
+   "capacidadGbps": 10
+  },
+  {
+   "u": 0,
+   "v": 9,
+   "distanciaKm": 251,
+   "costo": 251,
+   "capacidadGbps": 10
+  },
+  {
+   "u": 0,
+   "v": 10,
+   "distanciaKm": 214,
+   "costo": 214,
+   "capacidadGbps": 10
+  },
+  {
+   "u": 0,
+   "v": 6,
+   "distanciaKm": 626,
+   "costo": 626,
+   "capacidadGbps": 10
+  },
+  {
+   "u": 1,
+   "v": 3,
+   "distanciaKm": 410,
+   "costo": 410,
+   "capacidadGbps": 40
+  },
+  {
+   "u": 1,
+   "v": 6,
+   "distanciaKm": 250,
+   "costo": 250,
+   "capacidadGbps": 40
+  },
+  {
+   "u": 1,
+   "v": 2,
+   "distanciaKm": 474,
+   "costo": 474,
+   "capacidadGbps": 40
+  },
+  {
+   "u": 2,
+   "v": 5,
+   "distanciaKm": 364,
+   "costo": 364,
+   "capacidadGbps": 100
+  },
+  {
+   "u": 2,
+   "v": 9,
+   "distanciaKm": 411,
+   "costo": 411,
+   "capacidadGbps": 100
+  },
+  {
+   "u": 2,
+   "v": 8,
+   "distanciaKm": 628,
+   "costo": 628,
+   "capacidadGbps": 100
+  },
+  {
+   "u": 3,
+   "v": 4,
+   "distanciaKm": 343,
+   "costo": 343,
+   "capacidadGbps": 10
+  },
+  {
+   "u": 3,
+   "v": 7,
+   "distanciaKm": 1053,
+   "costo": 1053,
+   "capacidadGbps": 10
+  },
+  {
+   "u": 4,
+   "v": 5,
+   "distanciaKm": 358,
+   "costo": 358,
+   "capacidadGbps": 40
+  },
+  {
+   "u": 5,
+   "v": 11,
+   "distanciaKm": 1125,
+   "costo": 1125,
+   "capacidadGbps": 100
+  },
+  {
+   "u": 8,
+   "v": 11,
+   "distanciaKm": 773,
+   "costo": 773,
+   "capacidadGbps": 100
+  },
+  {
+   "u": 8,
+   "v": 9,
+   "distanciaKm": 312,
+   "costo": 312,
+   "capacidadGbps": 100
+  },
+  {
+   "u": 9,
+   "v": 10,
+   "distanciaKm": 442,
+   "costo": 442,
+   "capacidadGbps": 10
+  },
+  {
+   "u": 6,
+   "v": 13,
+   "distanciaKm": 1462,
+   "costo": 1462,
+   "capacidadGbps": 10
+  },
+  {
+   "u": 10,
+   "v": 13,
+   "distanciaKm": 1125,
+   "costo": 1125,
+   "capacidadGbps": 40
+  },
+  {
+   "u": 7,
+   "v": 12,
+   "distanciaKm": 503,
+   "costo": 503,
+   "capacidadGbps": 40
+  },
+  {
+   "u": 3,
+   "v": 12,
+   "distanciaKm": 1453,
+   "costo": 1453,
+   "capacidadGbps": 10
+  },
+  {
+   "u": 7,
+   "v": 6,
+   "distanciaKm": 1188,
+   "costo": 1188,
+   "capacidadGbps": 40
+  },
+  {
+   "u": 2,
+   "v": 3,
+   "distanciaKm": 478,
+   "costo": 478,
+   "capacidadGbps": 100
+  }
+ ]
+}
