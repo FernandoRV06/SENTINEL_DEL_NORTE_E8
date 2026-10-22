@@ -4,7 +4,7 @@ Hackathon integrador de TC2038 (Análisis y Diseño de Algoritmos Avanzados). SE
 
 **Contenido**
 
-1. [Cómo probarlo paso a paso](#cómo-probarlo-paso-a-paso)
+1. [Cómo probar la página paso a paso](#cómo-probar-la-página-paso-a-paso)
 2. [Los algoritmos y por qué los elegimos](#los-algoritmos-y-por-qué-los-elegimos)
 3. [Estructura del repositorio](#estructura-del-repositorio)
 4. [Uso del núcleo desde la terminal](#uso-del-núcleo-desde-la-terminal)
@@ -14,83 +14,28 @@ Hackathon integrador de TC2038 (Análisis y Diseño de Algoritmos Avanzados). SE
 
 ---
 
-## Cómo probarlo paso a paso
+## Cómo probar la página paso a paso
 
-### 1. Revisar los requisitos
-
-| Necesitas | Para qué | Cómo revisar si lo tienes |
-| --- | --- | --- |
-| Git | Descargar el repositorio | `git --version` |
-| Compilador de C++17 (`g++` o `clang++`) | Compilar el núcleo | `g++ --version` o `clang++ --version` |
-| Python 3.8 o más reciente | Servidor de la página y pruebas (solo biblioteca estándar, no hay que instalar paquetes) | `python3 --version` |
-| Un navegador (Chrome, Safari, Firefox o Edge) | Usar la aplicación | — |
-
-Si falta algo:
-
-- **macOS:** `xcode-select --install` instala `clang++` y Git. Python 3 se descarga de [python.org](https://www.python.org/downloads/).
-- **Linux (Ubuntu/Debian):** `sudo apt install git g++ python3`.
-- **Windows:** lo más sencillo es usar [WSL](https://learn.microsoft.com/windows/wsl/install) y seguir los pasos de Linux. Sin WSL, instala `g++` con [MSYS2/MinGW-w64](https://www.msys2.org/) y Python desde [python.org](https://www.python.org/downloads/); en ese caso escribe `python` en lugar de `python3`.
-
-Solo se necesita internet para el mapa de fondo de la aplicación. Sin conexión todo funciona igual, pero el mapa se ve en gris.
-
-### 2. Descargar el proyecto
+### 1. Descargar el proyecto
 
 ```
 git clone https://github.com/FernandoRV06/SENTINEL_DEL_NORTE_E8.git
 cd SENTINEL_DEL_NORTE_E8
 ```
 
-Si tienes el ZIP de la entrega, descomprímelo y abre una terminal dentro de la carpeta. **Todos los comandos siguientes se ejecutan desde la carpeta raíz del proyecto.**
+Si tienes el ZIP de la entrega, descomprímelo y abre una terminal dentro de la carpeta.
 
-### 3. Compilar el núcleo
+### 2. Abrir la página
 
-Con las mismas opciones que usa el autograder:
-
-```
-g++ -std=c++17 -O2 -Wall -Wextra -Wpedantic src/main.cpp -o sentinel
-```
-
-Con Clang, cambia `g++` por `clang++`. Debe terminar sin errores y crear el archivo `sentinel` (en Windows, `sentinel.exe`).
-
-### 4. Hacer una prueba rápida
-
-```
-./sentinel < tests/peticiones/mst.json
-```
-
-Debes ver:
-
-```
-{"cost":4,"edges":[[0,1,1],[2,3,1],[1,2,2]]}
-```
-
-En `tests/peticiones/` hay una petición de ejemplo por cada modo, y en `tests/esperados.md` está la respuesta esperada de cada una. En PowerShell de Windows, `<` no funciona; usa `Get-Content tests\peticiones\mst.json | .\sentinel.exe`.
-
-### 5. Correr las pruebas automáticas
-
-```
-python3 tests/probarModulos.py
-python3 tests/probarTspVoronoi.py
-```
-
-Necesitan el `sentinel` del paso 3. Cada script tarda unos 15 a 25 segundos y debe terminar con:
-
-```
-Resumen: 3455 pasaron, 0 fallaron
-Resumen: 370 pasaron, 0 fallaron
-```
-
-Las pruebas comparan la respuesta del núcleo contra soluciones escritas aparte en Python, con casos borde, casos aleatorios y pruebas de estrés.
-
-### 6. Abrir la aplicación
+Desde la carpeta raíz del proyecto:
 
 ```
 python3 app/servidor.py
 ```
 
-El servidor compila el núcleo si hace falta y abre el navegador en `http://localhost:8000`. Si no se abre solo, escribe esa dirección en el navegador. Arriba a la derecha debe aparecer el indicador verde **"Núcleo C++ conectado"**.
+El servidor compila el núcleo en C++ si hace falta y abre el navegador en `http://localhost:8000`. Si no se abre solo, escribe esa dirección en el navegador. Arriba a la derecha debe aparecer el indicador verde **"Núcleo C++ conectado"**.
 
-### 7. Recorrido sugerido
+### 3. Recorrido sugerido
 
 Todos los resultados los calcula el núcleo en C++ en ese momento; la página no guarda resultados precalculados. Los valores esperados corresponden al primer escenario, "Demostración GÉANT: Londres a Atenas".
 
@@ -107,7 +52,7 @@ Todos los resultados los calcula el núcleo en C++ en ese momento; la página no
 
 En el Scenario Manager también se puede cargar un escenario propio en `.json` o descargar el actual.
 
-### 8. Cerrar
+### 4. Cerrar
 
 En la terminal donde corre el servidor, presiona `Ctrl + C`.
 
@@ -115,7 +60,7 @@ En la terminal donde corre el servidor, presiona `Ctrl + C`.
 
 | Problema | Solución |
 | --- | --- |
-| "No se encontro g++ ni clang++" al abrir el servidor | Instala un compilador (paso 1) y compila (paso 3) antes de abrir el servidor |
+| "No se encontro g++ ni clang++" al abrir el servidor | Instala un compilador de C++ (`g++` o `clang++`) y vuelve a abrir el servidor |
 | "Address already in use" al abrir el servidor | El puerto 8000 está ocupado, normalmente por otro servidor abierto. Ciérralo con `Ctrl + C` y vuelve a intentar |
 | La página dice "Sin servidor" | Abriste `index.html` directamente. La página necesita el servidor: usa `python3 app/servidor.py` y entra a `http://localhost:8000` |
 | El mapa se ve gris | No hay internet para descargar el mapa de fondo. La red y los resultados se dibujan igual |
@@ -185,7 +130,7 @@ Para cada desafío implementamos una **técnica principal**, que es la que recib
 
 ### Comparar las técnicas por tu cuenta
 
-- En la aplicación: pestaña **Algorithm Laboratory** (paso 7).
+- En la aplicación: pestaña **Algorithm Laboratory** (paso 3).
 - Desde la terminal: agrega `"technique"` dentro de `input` (ver [Uso del núcleo desde la terminal](#uso-del-núcleo-desde-la-terminal)).
 - Todas las mediciones: `python3 results/benchmarks.py` (ver [Pruebas y benchmarks](#pruebas-y-benchmarks)).
 
@@ -216,6 +161,12 @@ team.txt    Integrantes y reparto de tareas
 
 ## Uso del núcleo desde la terminal
 
+Compilación, con las mismas opciones que usa el autograder (con Clang, cambia `g++` por `clang++`):
+
+```
+g++ -std=c++17 -O2 -Wall -Wextra -Wpedantic src/main.cpp -o sentinel
+```
+
 El ejecutable lee **un** objeto JSON por la entrada estándar y escribe **un** objeto JSON por la salida estándar. Los modos son `mst`, `tsp`, `flow`, `voronoi`, `matching`, `palindrome` y `common`.
 
 Para usar la técnica alternativa, agrega `"technique"` dentro de `input`. Si no se envía, se usa la principal, que es la que recibe el autograder:
@@ -233,7 +184,7 @@ python3 tests/probarModulos.py         # MST, flujo, firmas, palíndromo y subca
 python3 tests/probarTspVoronoi.py      # TSP y Voronoi
 ```
 
-Cada script compara las respuestas contra soluciones escritas aparte en Python e incluye casos borde, casos aleatorios con el formato del autograder, pruebas de estrés y las técnicas alternativas. Se puede pasar una semilla como argumento para cambiar los casos aleatorios (por defecto, 2038). Detalle de los casos en `tests/esperados.md`.
+Necesitan el ejecutable `sentinel` ya compilado (ver la sección anterior). Cada script compara las respuestas contra soluciones escritas aparte en Python e incluye casos borde, casos aleatorios con el formato del autograder, pruebas de estrés y las técnicas alternativas. Se puede pasar una semilla como argumento para cambiar los casos aleatorios (por defecto, 2038). Detalle de los casos en `tests/esperados.md`.
 
 ```
 python3 results/benchmarks.py           # 3 repeticiones por medición (unos 3 minutos)
