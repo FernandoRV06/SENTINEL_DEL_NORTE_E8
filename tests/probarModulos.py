@@ -33,8 +33,6 @@ EJECUTABLE = os.path.join(RAIZ, "sentinel")
 PETICIONES = os.path.join(RAIZ, "tests", "peticiones")
 HEXADECIMAL = "0123456789ABCDEF"
 TOLERANCIA = 1e-5
-# Tamanos de estres de la pagina: (mst_n, mst_extra, flow_n, flow_extra,
-# matching_len, pal_len, common_len, limite en segundos).
 PERFILES_ESTRES = {
 	"lite": (400, 2000, 80, 600, 50000, 50000, 12000, 6),
 	"normal": (1200, 7000, 180, 1800, 220000, 220000, 55000, 8),
@@ -69,7 +67,6 @@ def iguales(a, b):
 	return isinstance(a, (int, float)) and abs(a - b) <= TOLERANCIA * max(1, abs(b))
 
 
-# ---------------------------------------------------------------- MST
 
 def mstPrim(cantidad, aristas):
 	"""Costo minimo con Prim O(n^2) sobre la matriz de pesos minimos."""
@@ -141,7 +138,6 @@ def probarMst(nombre, entrada, limite=None):
 	reportar(nombre, correcto, motivo or f"n={len(entrada['nodes'])} cost={respuesta.get('cost')}", segundos, limite)
 
 
-# --------------------------------------------------------------- Flujo
 
 def flujoDinic(cantidad, aristas, fuente, sumidero):
 	"""Flujo maximo con Dinic (niveles BFS + bloqueo DFS iterativo)."""
@@ -207,7 +203,6 @@ def probarFlujo(nombre, entrada, limite=None):
 	reportar(nombre, correcto, motivo or f"n={entrada['n']} flow={respuesta.get('flow')}", segundos, limite)
 
 
-# -------------------------------------------------------------- Cadenas
 
 def probarFirmas(nombre, entrada, limite=None):
 	"""Corre un caso de firmas y lo compara con str.find."""
@@ -302,7 +297,6 @@ def probarComun(nombre, entrada, limite=None, longitudMinima=None):
 	reportar(nombre, correcto, motivo or f"range={rango}", segundos, limite)
 
 
-# --------------------------------------------------------- generadores
 
 def grafoMst(generador, cantidad, extra, pesoMaximo=25, densidad=None):
 	"""Camino 0-1-...-n-1 mas aristas extra, como los casos de la pagina."""

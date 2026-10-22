@@ -44,11 +44,10 @@ struct RangoPalindromo {
  */
 inline std::vector<std::size_t> calcularRadiosManacher(const std::string &texto, bool esPar) {
 	std::size_t cantidad = texto.size();
-	// Con radio k, el impar cubre [i - k + 1, i + k - 1] y el par [i - k, i + k - 1];
-	// "ajuste" es esa diferencia de una posicion en el extremo izquierdo.
+
 	std::size_t ajuste = esPar ? 1 : 0;
 	std::vector<std::size_t> radio(cantidad, 0);
-	// [izquierda, derecha) es el palindromo encontrado que llega mas a la derecha.
+
 	std::size_t izquierda = 0;
 	std::size_t derecha = 0;
 	for (std::size_t centro = 0; centro < cantidad; centro++) {
@@ -113,8 +112,6 @@ inline RangoPalindromo expandirDesdeCentros(const std::string &texto) {
 	std::size_t mejorLongitud = 0;
 	for (std::size_t centro = 0; centro < texto.size(); centro++) {
 		for (std::size_t ajuste = 0; ajuste < 2; ajuste++) {
-			// El palindromo es texto[izquierda, derecha): con ajuste 0 empieza en
-			// el caracter centro (impar); con ajuste 1, vacio tras el centro (par).
 			std::size_t izquierda = centro + ajuste;
 			std::size_t derecha = centro + 1;
 			bool crece = true;

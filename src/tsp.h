@@ -26,14 +26,12 @@
 
 #include "json.h"
 
-// Mayor numero de centrales que se resuelve de forma exacta: Held-Karp usa
-// O(2^n * n) memoria y O(2^n * n^2) tiempo (16 centrales: ~16 millones de pasos).
 const std::size_t LIMITE_EXACTO_TSP = 16;
-// Tope al forzar Held-Karp en los benchmarks (20 centrales: ~330 MB).
+
 const std::size_t MAXIMO_EXACTO_FORZADO_TSP = 20;
-// Mejora minima para aceptar un cambio 2-opt (evita ciclos por redondeo).
+
 const double TOLERANCIA_TSP = 1e-9;
-// Tope de pasadas completas de 2-opt para acotar el tiempo en casos grandes.
+
 const int MAXIMO_PASADAS_2OPT = 1000;
 
 /*
@@ -87,8 +85,7 @@ inline std::vector<std::size_t> resolverTspExacto(const std::vector<std::vector<
 	std::vector<double> costo(totalMascaras * cantidad, INFINITO);
 	std::vector<std::size_t> anterior(totalMascaras * cantidad, 0);
 	costo[1 * cantidad + 0] = 0.0;
-	// Solo las mascaras impares contienen al origen; crecen en orden, asi que
-	// cada estado ya esta resuelto cuando se expande.
+
 	for (std::size_t mascara = 1; mascara < totalMascaras; mascara += 2) {
 		for (std::size_t ultimo = 0; ultimo < cantidad; ultimo++) {
 			double actual = costo[mascara * cantidad + ultimo];
@@ -116,7 +113,7 @@ inline std::vector<std::size_t> resolverTspExacto(const std::vector<std::vector<
 			mejorUltimo = ultimo;
 		}
 	}
-	// Se reconstruye la ruta de atras hacia adelante siguiendo "anterior".
+
 	std::vector<std::size_t> ruta;
 	std::size_t mascara = completa;
 	std::size_t nodo = mejorUltimo;
@@ -196,7 +193,6 @@ inline void mejorarConDosOpt(const std::vector<std::vector<double>> &distancias,
 		huboMejora = false;
 		pasadas++;
 		for (std::size_t primero = 0; primero + 2 < cantidad; primero++) {
-			// Si primero == 0, la ultima arista comparte el nodo 0 y no se cruza.
 			std::size_t limite = primero == 0 ? cantidad - 1 : cantidad;
 			for (std::size_t segundo = primero + 2; segundo < limite; segundo++) {
 				std::size_t a = ruta[primero];
@@ -247,7 +243,7 @@ inline ValorJson resolverTsp(const ValorJson &entrada) {
 	if (tecnica == "held-karp" && distancias.size() > MAXIMO_EXACTO_FORZADO_TSP) {
 		throw std::runtime_error("held-karp solo acepta hasta 20 centrales (memoria O(2^n * n))");
 	}
-	// Sin centrales la ruta queda como [0] (n + 1 = 1 nodo); con una, [0, 0].
+
 	std::vector<std::size_t> ruta;
 	if (distancias.size() == 1) {
 		ruta.push_back(0);

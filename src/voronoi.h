@@ -25,7 +25,6 @@
 
 #include "json.h"
 
-// Margen para decidir de que lado de una mediatriz queda un vertice.
 const double TOLERANCIA_VORONOI = 1e-9;
 
 /*
@@ -134,12 +133,10 @@ inline std::vector<PuntoVoronoi> construirCelda(const std::vector<PuntoVoronoi> 
 	bool puedeRecortar = true;
 	while (posicion < otros.size() && puedeRecortar && !celda.empty()) {
 		const PuntoVoronoi &otro = sitios[otros[posicion]];
-		// (d/2)^2 > r^2  equivale a  d^2 > 4 r^2.
+
 		if (podar && distanciaCuadrada[otros[posicion]] > 4.0 * calcularRadioCuadrado(sitio, celda) + TOLERANCIA_VORONOI) {
 			puedeRecortar = false;
 		} else {
-			// Puntos mas cerca de "sitio" que de "otro":
-			// 2(xo - xs)x + 2(yo - ys)y <= xo^2 + yo^2 - xs^2 - ys^2.
 			double a = 2.0 * (otro.x - sitio.x);
 			double b = 2.0 * (otro.y - sitio.y);
 			double c = otro.x * otro.x + otro.y * otro.y - sitio.x * sitio.x - sitio.y * sitio.y;

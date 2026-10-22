@@ -12,7 +12,6 @@
 const HEXADECIMAL = "0123456789ABCDEF";
 const MAXIMO_CARACTERES_VISIBLES = 3000;
 
-// Cada problema: nombre, tecnicas (principal primero) con su nombre legible, tamano sugerido y que se espera ver.
 const PROBLEMAS = {
 	mst: {
 		nombre: "MST · conectar todo al menor costo",

@@ -129,7 +129,6 @@ inline std::vector<AristaMst> leerAristasMst(const ValorJson &entrada, std::size
  * Retorno: las aristas elegidas, en el orden en que se agregaron.
  */
 inline std::vector<AristaMst> calcularKruskal(std::size_t cantidadNodos, std::vector<AristaMst> aristas) {
-	// stable_sort: con pesos iguales se respeta el orden de la entrada.
 	std::stable_sort(aristas.begin(), aristas.end(), [](const AristaMst &izquierda, const AristaMst &derecha) {
 		return izquierda.peso < derecha.peso;
 	});
@@ -163,7 +162,7 @@ inline std::vector<AristaMst> calcularPrim(std::size_t cantidadNodos, const std:
 		std::swap(reversa.origen, reversa.destino);
 		vecinos[arista.destino].push_back(reversa);
 	}
-	// El monticulo guarda (peso, indice de la arista candidata en "candidatas").
+
 	std::vector<AristaMst> candidatas;
 	std::vector<std::pair<double, std::size_t>> monticulo;
 	auto mayorPrimero = [](const std::pair<double, std::size_t> &izquierda, const std::pair<double, std::size_t> &derecha) {

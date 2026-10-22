@@ -24,7 +24,6 @@
 #include "tsp.h"
 #include "voronoi.h"
 
-// Nombres de los modos.
 const std::string MODO_MST = "mst";
 const std::string MODO_TSP = "tsp";
 const std::string MODO_FLUJO = "flow";

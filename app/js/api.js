@@ -10,10 +10,8 @@
  * Fecha de creacion: 21/10/2026
  */
 
-// Rectangulo [lonMin, latMin, lonMax, latMax] donde se recortan las regiones de Voronoi.
 const LIMITES_VORONOI = [-12, 34, 32, 63];
 
-// Estado que comparten las cuatro vistas.
 const estado = {
 	red: null,
 	escenarios: [],

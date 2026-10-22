@@ -27,8 +27,6 @@
 #include "json.h"
 #include "transmision.h"
 
-// Simbolos reservados: el final va antes que todo y el separador despues;
-// los caracteres reales se recorren dos lugares para no chocar con ellos.
 const std::size_t SIMBOLO_FINAL = 0;
 const std::size_t SIMBOLO_SEPARADOR = 1;
 const std::size_t DESPLAZAMIENTO_CARACTER = 2;
@@ -83,8 +81,6 @@ inline std::vector<std::size_t> construirArregloSufijos(const std::vector<std::s
 	}
 	std::size_t longitud = 1;
 	while (longitud < cantidad && cantidadClases < cantidad) {
-		// Ordenar por (clase[i], clase[i + longitud]): los indices ya estan
-		// ordenados por la segunda mitad si se recorren "longitud" lugares atras.
 		std::vector<std::size_t> recorridos(cantidad);
 		for (std::size_t indice = 0; indice < cantidad; indice++) {
 			recorridos[indice] = (orden[indice] + cantidad - longitud) % cantidad;
@@ -162,8 +158,7 @@ inline std::vector<std::size_t> buscarSubcadenaComun(const std::string &primera,
 	std::size_t cantidad = texto.size();
 	std::size_t limitePrimera = primera.size();
 	std::size_t limiteSegunda = primera.size() + 1 + segunda.size();
-	// mejor[p]: prefijo comun mas largo del sufijo p de t1 con algun sufijo de t2.
-	// Es el minimo de LCP hasta el sufijo de t2 mas cercano, hacia arriba o abajo.
+
 	const std::size_t SIN_SEGUNDA = std::numeric_limits<std::size_t>::max();
 	std::vector<std::size_t> mejor(limitePrimera, 0);
 	std::size_t minimo = 0;
@@ -218,8 +213,7 @@ inline std::vector<std::size_t> buscarSubcadenaComunDinamica(const std::string &
 			if (primera[fila] == segunda[columna]) {
 				actual[columna + 1] = anterior[columna] + 1;
 			}
-			// Las filas avanzan sobre t1: con la misma longitud, la primera que
-			// aparece es la que empieza antes, asi que solo se acepta si es mas larga.
+
 			if (actual[columna + 1] > resultado[1]) {
 				resultado[1] = actual[columna + 1];
 				resultado[0] = fila + 1 - resultado[1];

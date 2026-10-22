@@ -25,9 +25,8 @@
 
 #include "json.h"
 
-// Marca de "sin arista" en las listas de la red residual.
 const std::size_t SIN_ARISTA_FLUJO = std::numeric_limits<std::size_t>::max();
-// Capacidad residual minima para considerar que una arista sigue abierta.
+
 const double TOLERANCIA_FLUJO = 1e-9;
 
 /*
@@ -69,7 +68,6 @@ public:
 		double total = 0.0;
 		std::vector<std::size_t> aristaLlegada(primera.size(), SIN_ARISTA_FLUJO);
 		while (fuente != sumidero && buscarCamino(fuente, sumidero, aristaLlegada, porAnchura)) {
-			// El cuello de botella es la menor capacidad residual del camino.
 			double cuello = std::numeric_limits<double>::infinity();
 			std::size_t nodo = sumidero;
 			while (nodo != fuente) {

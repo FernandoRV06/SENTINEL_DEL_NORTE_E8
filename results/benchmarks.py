@@ -32,7 +32,6 @@ CARPETA = os.path.join(RAIZ, "results")
 SEMILLA = 2038
 BANDERAS = "-std=c++17 -O2 -Wall -Wextra -Wpedantic"
 HEXADECIMAL = "0123456789ABCDEF"
-# Si una tecnica tarda mas que esto en un tamano, ya no se prueba con los mayores.
 PRESUPUESTO_SEGUNDOS = 20
 RAPIDO = "--rapido" in sys.argv
 REPETICIONES = 1 if RAPIDO else 3
@@ -50,20 +49,16 @@ def medir(modo, entrada):
 		proceso.stdin.write(peticion)
 		proceso.stdin.close()
 		salida = proceso.stdout.read()
-		# wait4 da el uso de recursos de ESTE proceso (getrusage acumularia todos).
 		_, _, uso = os.wait4(proceso.pid, 0)
 		tiempos.append(time.perf_counter() - inicio)
 		proceso.stdout.close()
-		# Ya se espero con wait4; se marca terminado para que Popen no lo espere otra vez.
 		proceso.returncode = 0
-		# ru_maxrss viene en bytes en macOS y en KB en Linux.
 		escala = 1 if sys.platform == "darwin" else 1024
 		memoria = max(memoria, uso.ru_maxrss * escala / (1024 * 1024))
 		respuesta = json.loads(salida)
 	return respuesta, statistics.median(tiempos), memoria
 
 
-# ----------------------------------------------------------- instancias
 
 def instanciaMst(generador, cantidad):
 	"""Grafo conexo: camino base mas 4n aristas aleatorias (E = 5n)."""
@@ -127,8 +122,6 @@ def instanciaComun(generador, cantidad):
 	return {"transmissions": [partes[0] + bloque + partes[1], partes[2] + bloque + partes[3]]}, cantidad
 
 
-# Cada experimento: (modo, escenario, generador, tamanos, tecnicas, funcion que
-# resume la respuesta, tamano que se usa como "n" en la tabla, complejidad teorica).
 EXPERIMENTOS = [
 	("mst", "aleatorio E = 5V", instanciaMst, [1000, 10000, 50000], ["kruskal", "prim"],
 	 lambda r: r["cost"], "V", {"kruskal": "O(E log E)", "prim": "O(E log V)"}),
@@ -198,8 +191,6 @@ def main():
 						agotadas.add(tecnica)
 					print(f"  {nombreTamano}={tamano:<8} {tecnica:<18} {segundos:9.3f} s  {memoria:8.1f} MB  {str(valor)[:40]}")
 				filas.append(fila)
-			# Coincidencia: en modos exactos todas deben dar lo mismo; en TSP se
-			# reporta la brecha de cada heuristica contra Held-Karp cuando existe.
 			valores = list(resultadosTamano.values())
 			for fila in filas[-len(tecnicas):]:
 				if fila["tecnica"] not in resultadosTamano:
@@ -211,7 +202,6 @@ def main():
 					fila["coincide"] = "heuristica"
 				else:
 					fila["coincide"] = "si" if all(v == valores[0] for v in valores) else "NO"
-	# Exponente empirico: pendiente de log(t) contra log(n) entre los dos mayores tamanos medidos.
 	for fila in filas:
 		previas = [f for f in filas if f["modo"] == fila["modo"] and f["escenario"] == fila["escenario"] and f["tecnica"] == fila["tecnica"] and f["segundos"] != "" and f["n"] < fila["n"]]
 		fila["exponente"] = ""

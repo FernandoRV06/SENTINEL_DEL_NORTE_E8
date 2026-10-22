@@ -30,17 +30,14 @@ EJECUTABLE = os.path.join(RAIZ, "sentinel")
 PETICIONES = os.path.join(RAIZ, "tests", "peticiones")
 TOLERANCIA_COSTO = 1e-5
 TOLERANCIA_AREA = 0.003
-# Tiempos limite del autograder (segundos) por perfil de estres.
 PERFILES_ESTRES = {"lite": (60, 80, 6), "normal": (120, 180, 8), "huge": (450, 500, 18)}
 
-# Costos optimos conocidos de los casos propios (calculados a mano).
 COSTOS_ESPERADOS = {
 	"tsp.json": 80, "tsp_vacio.json": 0, "tsp_un_nodo.json": 0, "tsp_dos_nodos.json": 14,
 	"tsp_triangulo.json": 12, "tsp_asimetrico.json": 5, "tsp_no_metrico.json": 4,
 	"tsp_iguales.json": 30, "tsp_ceros.json": 0, "tsp_decimales.json": 6.625,
 	"tsp_grandes.json": 4800000,
 }
-# Areas esperadas de cada celda de los casos propios (calculadas a mano).
 AREAS_ESPERADAS = {
 	"voronoi.json": [5000, 5000], "voronoi_un_sitio.json": [10000],
 	"voronoi_cuadrantes.json": [2500, 2500, 2500, 2500], "voronoi_colineales.json": [2000, 3500, 4500],
@@ -73,7 +70,6 @@ def costosIguales(a, b):
 	return abs(a - b) <= TOLERANCIA_COSTO * max(1, abs(b))
 
 
-# ---------------------------------------------------------------- TSP
 
 def tspFuerzaBruta(distancias):
 	"""Costo optimo probando todas las permutaciones (n <= 9)."""
@@ -132,7 +128,6 @@ def perimetroCirculo(nombre, distancias):
 	"""Para puntos en un circulo el optimo es recorrerlos en orden angular."""
 	cantidad = len(distancias)
 	desfase = 3 if cantidad == 10 else 7
-	# El nodo i esta en la posicion angular (i * desfase) mod n.
 	porPosicion = sorted(range(cantidad), key=lambda nodo: (nodo * desfase) % cantidad)
 	return sum(distancias[porPosicion[i]][porPosicion[(i + 1) % cantidad]] for i in range(cantidad))
 
@@ -152,7 +147,6 @@ def probarTsp(nombre, distancias, exigirOptimo=True, costoEsperado=None, tecnica
 			optimo = tspFuerzaBruta(distancias)
 		elif exigirOptimo and cantidad <= 16:
 			optimo = tspHeldKarp(distancias)
-		# El valor escrito a mano tambien debe coincidir con el oraculo.
 		if costoEsperado is not None and optimo is not None and not costosIguales(costoEsperado, optimo):
 			correcto, motivo = False, f"el costo esperado {costoEsperado} no es el optimo {optimo}"
 		if optimo is not None and not costosIguales(costoRuta, optimo):
@@ -162,7 +156,6 @@ def probarTsp(nombre, distancias, exigirOptimo=True, costoEsperado=None, tecnica
 	return segundos
 
 
-# ------------------------------------------------------------ Voronoi
 
 def areaPoligono(poligono):
 	"""Formula del zapato; 0 si tiene menos de tres vertices."""
@@ -261,7 +254,6 @@ def probarVoronoi(nombre, sitios, limites, muestrear=True, tecnica=None):
 	return segundos
 
 
-# ------------------------------------------------- generadores (pagina)
 
 def matrizAleatoria(generador, cantidad, minimo=1, maximo=60):
 	"""Matriz simetrica con pesos enteros, como los casos exactos de la pagina."""
