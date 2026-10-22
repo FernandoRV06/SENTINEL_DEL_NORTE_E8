@@ -3,9 +3,10 @@
  * Divide el rectangulo del dominio en regiones segun la central mas cercana,
  * sobre coordenadas planas. La celda de cada central es la interseccion del
  * rectangulo con los semiplanos "mas cerca de esta central que de la otra".
- * Usa recorte por semiplanos (O(n^2) en el peor caso, con poda por
- * distancia); Fortune queda como alternativa analizada. Para comparar se
- * puede pedir el mismo recorte sin poda (contra las n - 1 mediatrices).
+ * Usa recorte por semiplanos con poda por distancia, O(n^2 log n) porque
+ * cada celda ordena las demas centrales por distancia; Fortune queda como
+ * alternativa analizada. Para comparar se puede pedir el mismo recorte
+ * sin poda (contra las n - 1 mediatrices).
  * Autores: Carlos Emiliano Nava Flores (A00842650),
  *          Luis Enrique Castillo Carrillo (A00842390),
  *          Desiderio Ivan Ortegon Morton (A00840591),
