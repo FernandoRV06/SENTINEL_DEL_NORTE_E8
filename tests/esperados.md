@@ -1,5 +1,7 @@
 # Respuestas esperadas
 
+Equipo 8 · Sentinela del Norte: Carlos Emiliano Nava Flores (A00842650), Luis Enrique Castillo Carrillo (A00842390), Desiderio Iván Ortegón Mortón (A00840591), Fernando Robles Vidrio (A00843290).
+
 Cada archivo de `tests/peticiones/` es una petición con el formato exacto del autograder. Se ejecuta así:
 
 ```

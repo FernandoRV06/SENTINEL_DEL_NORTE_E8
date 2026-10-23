@@ -1,5 +1,7 @@
 # Benchmarks
 
+Equipo 8 · Sentinela del Norte: Carlos Emiliano Nava Flores (A00842650), Luis Enrique Castillo Carrillo (A00842390), Desiderio Iván Ortegón Mortón (A00840591), Fernando Robles Vidrio (A00843290).
+
 Generado por `python3 results/benchmarks.py`. Datos completos en `benchmarks.csv`.
 
 ## Entorno

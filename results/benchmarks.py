@@ -27,6 +27,9 @@ import subprocess
 import sys
 import time
 
+# Datos del equipo que encabezan el reporte generado
+DATOS_EQUIPO = "Equipo 8 · Sentinela del Norte: Carlos Emiliano Nava Flores (A00842650), Luis Enrique Castillo Carrillo (A00842390), Desiderio Iván Ortegón Mortón (A00840591), Fernando Robles Vidrio (A00843290)."
+
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 EJECUTABLE = os.path.join(RAIZ, "sentinel")
 CARPETA = os.path.join(RAIZ, "results")
@@ -217,7 +220,7 @@ def main():
 		escritor.writerows(filas)
 	entorno = describirEntorno()
 	with open(os.path.join(CARPETA, "benchmarks.md"), "w") as archivo:
-		archivo.write("# Benchmarks\n\nGenerado por `python3 results/benchmarks.py`. Datos completos en `benchmarks.csv`.\n\n## Entorno\n\n")
+		archivo.write("# Benchmarks\n\n" + DATOS_EQUIPO + "\n\nGenerado por `python3 results/benchmarks.py`. Datos completos en `benchmarks.csv`.\n\n## Entorno\n\n")
 		for clave, valor in entorno.items():
 			archivo.write(f"- **{clave}:** {valor}\n")
 		archivo.write("\n## Cómo leer las columnas\n\n")
