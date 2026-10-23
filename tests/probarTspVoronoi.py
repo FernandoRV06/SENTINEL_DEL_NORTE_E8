@@ -11,8 +11,11 @@ independientes del codigo C++:
 Incluye casos propios fijos, casos aleatorios con el formato de la pagina y
 pruebas de estres con los tamanos de los perfiles lite, normal y huge.
 Uso: python3 tests/probarTspVoronoi.py  (compila src/main.cpp antes)
-Autores: Carlos Emiliano Nava Flores, Luis Enrique Castillo Carrillo,
-         Desiderio Ivan Ortegon Morton, Fernando Robles Vidrio
+Equipo: Sentinela del Norte (Equipo 8)
+Autores: Carlos Emiliano Nava Flores (A00842650),
+         Luis Enrique Castillo Carrillo (A00842390),
+         Desiderio Ivan Ortegon Morton (A00840591),
+         Fernando Robles Vidrio (A00843290)
 Fecha de creacion: 20/10/2026
 """
 
@@ -96,15 +99,14 @@ def tspHeldKarp(distancias):
 		fila = costo[mascara]
 		for ultimo in range(resto):
 			actual = fila[ultimo]
-			if actual == math.inf:
-				continue
-			origen = distancias[ultimo + 1]
-			for siguiente in range(resto):
-				bit = 1 << siguiente
-				if not mascara & bit:
-					candidato = actual + origen[siguiente + 1]
-					if candidato < costo[mascara | bit][siguiente]:
-						costo[mascara | bit][siguiente] = candidato
+			if actual != math.inf:
+				origen = distancias[ultimo + 1]
+				for siguiente in range(resto):
+					bit = 1 << siguiente
+					if not mascara & bit:
+						candidato = actual + origen[siguiente + 1]
+						if candidato < costo[mascara | bit][siguiente]:
+							costo[mascara | bit][siguiente] = candidato
 	completa = (1 << resto) - 1
 	return min(costo[completa][nodo] + distancias[nodo + 1][0] for nodo in range(resto))
 
@@ -171,20 +173,19 @@ def voronoiReferencia(sitios, limites):
 	for propio, (xs, ys) in enumerate(sitios):
 		celda = [[xMin, yMin], [xMax, yMin], [xMax, yMax], [xMin, yMax]]
 		for otro, (xo, yo) in enumerate(sitios):
-			if otro == propio or not celda:
-				continue
-			a, b = 2 * (xo - xs), 2 * (yo - ys)
-			c = xo * xo + yo * yo - xs * xs - ys * ys
-			nueva = []
-			for i, p in enumerate(celda):
-				q = celda[(i + 1) % len(celda)]
-				lp, lq = a * p[0] + b * p[1] - c, a * q[0] + b * q[1] - c
-				if lp <= 1e-9:
-					nueva.append(p)
-				if (lp < -1e-9 and lq > 1e-9) or (lp > 1e-9 and lq < -1e-9):
-					t = lp / (lp - lq)
-					nueva.append([p[0] + t * (q[0] - p[0]), p[1] + t * (q[1] - p[1])])
-			celda = nueva
+			if otro != propio and celda:
+				a, b = 2 * (xo - xs), 2 * (yo - ys)
+				c = xo * xo + yo * yo - xs * xs - ys * ys
+				nueva = []
+				for i, p in enumerate(celda):
+					q = celda[(i + 1) % len(celda)]
+					lp, lq = a * p[0] + b * p[1] - c, a * q[0] + b * q[1] - c
+					if lp <= 1e-9:
+						nueva.append(p)
+					if (lp < -1e-9 and lq > 1e-9) or (lp > 1e-9 and lq < -1e-9):
+						t = lp / (lp - lq)
+						nueva.append([p[0] + t * (q[0] - p[0]), p[1] + t * (q[1] - p[1])])
+				celda = nueva
 		celdas.append(celda)
 	return celdas
 

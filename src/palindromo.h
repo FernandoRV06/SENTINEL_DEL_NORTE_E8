@@ -4,6 +4,7 @@
  * longitud par o impar, sobre caracteres hexadecimales.
  * Usa Manacher: O(n) tiempo y memoria por transmision.
  * Alternativa para comparar: expansion desde cada centro, O(n^2).
+ * Equipo: Sentinela del Norte (Equipo 8)
  * Autores: Carlos Emiliano Nava Flores (A00842650),
  *          Luis Enrique Castillo Carrillo (A00842390),
  *          Desiderio Ivan Ortegon Morton (A00840591),

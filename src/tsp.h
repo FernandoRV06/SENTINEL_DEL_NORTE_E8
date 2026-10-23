@@ -7,6 +7,7 @@
  * El costo se mide sobre la matriz tal cual: el autograder suma
  * distances[ruta[i]][ruta[i + 1]], asi que no se acortan caminos con
  * centrales intermedias (Floyd-Warshall) porque el costo ya no coincidiria.
+ * Equipo: Sentinela del Norte (Equipo 8)
  * Autores: Carlos Emiliano Nava Flores (A00842650),
  *          Luis Enrique Castillo Carrillo (A00842390),
  *          Desiderio Ivan Ortegon Morton (A00840591),

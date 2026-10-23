@@ -4,6 +4,7 @@
  * de cada coincidencia, contando desde la posicion uno.
  * Usa KMP: O(n + m) por firma, sin retroceder en la transmision.
  * Alternativa para comparar: busqueda ingenua, O(n * m) en el peor caso.
+ * Equipo: Sentinela del Norte (Equipo 8)
  * Autores: Carlos Emiliano Nava Flores (A00842650),
  *          Luis Enrique Castillo Carrillo (A00842390),
  *          Desiderio Ivan Ortegon Morton (A00840591),

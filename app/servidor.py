@@ -7,6 +7,7 @@ momento; no hay resultados precalculados.
 Solo usa la biblioteca estandar de Python 3. Si el ejecutable no existe,
 lo compila con las mismas opciones que el autograder.
 Uso: python3 app/servidor.py  y abrir http://localhost:8000
+Equipo: Sentinela del Norte (Equipo 8)
 Autores: Carlos Emiliano Nava Flores (A00842650),
          Luis Enrique Castillo Carrillo (A00842390),
          Desiderio Ivan Ortegon Morton (A00840591),
@@ -105,6 +106,11 @@ class ManejadorSentinel(http.server.SimpleHTTPRequestHandler):
 	"""
 
 	def __init__(self, *argumentos, **opciones):
+		"""
+		Fija app/ como carpeta raiz de los archivos estaticos.
+		Parametros: argumentos y opciones del manejador base de http.server.
+		Regresa: nada.
+		"""
 		super().__init__(*argumentos, directory=CARPETA_APP, **opciones)
 
 	def responderJson(self, codigo, datos):

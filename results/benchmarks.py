@@ -7,6 +7,7 @@ del proceso, si la respuesta coincide entre tecnicas y el exponente
 empirico de crecimiento para compararlo con la complejidad teorica.
 Escribe results/benchmarks.csv y results/benchmarks.md.
 Uso: python3 results/benchmarks.py [--rapido]  (compila src/main.cpp antes)
+Equipo: Sentinela del Norte (Equipo 8)
 Autores: Carlos Emiliano Nava Flores (A00842650),
          Luis Enrique Castillo Carrillo (A00842390),
          Desiderio Ivan Ortegon Morton (A00840591),

@@ -2,6 +2,17 @@
 
 Hackathon integrador de TC2038 (Análisis y Diseño de Algoritmos Avanzados). SENTINEL es un "gemelo digital" de una red de telecomunicaciones: resuelve 7 problemas de infraestructura de red y de ciberseguridad con un núcleo en C++, y los muestra en una aplicación web sobre la red europea GÉANT.
 
+**Equipo 8 · Sentinela del Norte**
+
+| Integrante | Matrícula |
+| --- | --- |
+| Carlos Emiliano Nava Flores | A00842650 |
+| Luis Enrique Castillo Carrillo | A00842390 |
+| Desiderio Iván Ortegón Mortón | A00840591 |
+| Fernando Robles Vidrio | A00843290 |
+
+Tecnológico de Monterrey · Grupo 603 · Prof. Nezih Nieto Gutiérrez · Octubre 2026
+
 **Contenido**
 
 1. [Cómo probar la página paso a paso](#cómo-probar-la-página-paso-a-paso)
@@ -202,6 +213,7 @@ app/        Aplicación web (servidor en Python y página)
 tests/      Pruebas automáticas y peticiones de ejemplo
 results/    Script y resultados de los benchmarks
 team.txt    Integrantes y reparto de tareas
+REFLEXION.md  Reporte de reflexión del equipo
 ```
 
 | Archivo | Contenido | Nombre de la técnica en `technique` |

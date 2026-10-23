@@ -3,6 +3,7 @@
  * Descripcion: lee UN objeto JSON de la entrada estandar con la forma
  * {"mode": "...", "input": {...}}, lo envia al modulo del desafio indicado
  * y escribe UN objeto JSON con la respuesta en la salida estandar.
+ * Equipo: Sentinela del Norte (Equipo 8)
  * Autores: Carlos Emiliano Nava Flores (A00842650),
  *          Luis Enrique Castillo Carrillo (A00842390),
  *          Desiderio Ivan Ortegon Morton (A00840591),

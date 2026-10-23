@@ -12,6 +12,7 @@ Incluye casos borde propios, casos aleatorios con el formato de la pagina,
 pruebas de estres con los tamanos de los perfiles lite, normal y huge, y las
 tecnicas alternativas (prim, ford-fulkerson, naive, center, dp).
 Uso: python3 tests/probarModulos.py [semilla]  (compila src/main.cpp antes)
+Equipo: Sentinela del Norte (Equipo 8)
 Autores: Carlos Emiliano Nava Flores (A00842650),
          Luis Enrique Castillo Carrillo (A00842390),
          Desiderio Ivan Ortegon Morton (A00840591),
@@ -108,6 +109,7 @@ def validarMst(entrada, respuesta, optimo):
 	padre = list(range(cantidad))
 
 	def raiz(nodo):
+		"""Representante del conjunto de nodo, con compresion de caminos."""
 		while padre[nodo] != nodo:
 			padre[nodo] = padre[padre[nodo]]
 			nodo = padre[nodo]
@@ -167,17 +169,20 @@ def flujoDinic(cantidad, aristas, fuente, sumidero):
 		if nivel[sumidero] < 0:
 			return total
 		actual = primera[:]
-		while True:
+		hayCamino = True
+		while hayCamino:
 			camino = []
 			nodo = fuente
-			while nodo != sumidero:
+			atorado = False
+			# Avanza por aristas del grafo de niveles; si se atora en la fuente, ya no hay camino
+			while nodo != sumidero and not atorado:
 				arista = actual[nodo]
 				while arista != -1 and not (capacidad[arista] > 1e-12 and nivel[destino[arista]] == nivel[nodo] + 1):
 					arista = siguiente[arista]
 				actual[nodo] = arista
-				if arista == -1:
-					if not camino:
-						break
+				if arista == -1 and not camino:
+					atorado = True
+				elif arista == -1:
 					nivel[nodo] = -1
 					ultima = camino.pop()
 					nodo = destino[ultima ^ 1]
@@ -185,13 +190,13 @@ def flujoDinic(cantidad, aristas, fuente, sumidero):
 				else:
 					camino.append(arista)
 					nodo = destino[arista]
-			if nodo != sumidero:
-				break
-			cuello = min(capacidad[a] for a in camino)
-			for a in camino:
-				capacidad[a] -= cuello
-				capacidad[a ^ 1] += cuello
-			total += cuello
+			hayCamino = nodo == sumidero
+			if hayCamino:
+				cuello = min(capacidad[a] for a in camino)
+				for a in camino:
+					capacidad[a] -= cuello
+					capacidad[a ^ 1] += cuello
+				total += cuello
 
 
 def probarFlujo(nombre, entrada, limite=None):

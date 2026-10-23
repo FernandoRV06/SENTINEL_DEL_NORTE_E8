@@ -3,6 +3,7 @@
  * firmas al nucleo en C++ (modos matching, palindrome y common), muestra
  * los resultados en palabras, resalta sobre cada transmision lo que
  * encontro y escribe la salida con el formato de texto del caso.
+ * Equipo: Sentinela del Norte (Equipo 8)
  * Autores: Carlos Emiliano Nava Flores (A00842650),
  *          Luis Enrique Castillo Carrillo (A00842390),
  *          Desiderio Ivan Ortegon Morton (A00840591),

@@ -2,6 +2,7 @@
  * Descripcion: punto de entrada de la pagina. Cambia entre las cuatro
  * vistas, revisa que el servidor (y por lo tanto el nucleo en C++) este
  * disponible, carga la red y los escenarios, y activa el primero.
+ * Equipo: Sentinela del Norte (Equipo 8)
  * Autores: Carlos Emiliano Nava Flores (A00842650),
  *          Luis Enrique Castillo Carrillo (A00842390),
  *          Desiderio Ivan Ortegon Morton (A00840591),

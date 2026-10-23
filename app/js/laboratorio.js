@@ -2,6 +2,7 @@
  * Descripcion: vista Algorithm Laboratory. Corre todas las tecnicas de un
  * problema sobre los mismos datos (los del escenario o una instancia
  * aleatoria del tamano indicado) y compara su tiempo y su resultado.
+ * Equipo: Sentinela del Norte (Equipo 8)
  * Autores: Carlos Emiliano Nava Flores (A00842650),
  *          Luis Enrique Castillo Carrillo (A00842390),
  *          Desiderio Ivan Ortegon Morton (A00840591),
@@ -250,7 +251,7 @@ async function compararTecnicas() {
 		resultados.push({ tecnica, ...resultado });
 	}
 	const referencia = resultados.find((r) => !r.error);
-	cuerpoTabla.innerHTML = resultados.map((r, i) => `<tr><td><strong>${nombres[r.tecnica]}</strong></td><td>${r.error ? "—" : `${r.segundos.toFixed(3)} s`}</td><td>${r.error ? "—" : resumirRespuesta(modo, r.respuesta)}</td><td>${explicarRenglon(modo, r, referencia, i === 0, referencia ? nombres[referencia.tecnica] : "")}</td></tr>`).join("");
+	cuerpoTabla.innerHTML = resultados.map((r, i) => `<tr><td><strong>${nombres[r.tecnica]}</strong></td><td>${r.error ? "-" : `${r.segundos.toFixed(3)} s`}</td><td>${r.error ? "-" : resumirRespuesta(modo, r.respuesta)}</td><td>${explicarRenglon(modo, r, referencia, i === 0, referencia ? nombres[referencia.tecnica] : "")}</td></tr>`).join("");
 	const ultima = resultados[resultados.length - 1];
 	const respuesta = ultima.error ? ultima.error : JSON.stringify(ultima.respuesta);
 	document.getElementById("labRespuesta").textContent = respuesta.length > MAXIMO_CARACTERES_VISIBLES ? respuesta.slice(0, MAXIMO_CARACTERES_VISIBLES) + "…" : respuesta;

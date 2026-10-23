@@ -2,6 +2,7 @@
  * Descripcion: lectura y escritura de JSON para el contrato del autograder.
  * El ejecutable recibe un objeto JSON por la entrada estandar y responde
  * otro objeto JSON por la salida estandar; este archivo hace esa conversion.
+ * Equipo: Sentinela del Norte (Equipo 8)
  * Autores: Carlos Emiliano Nava Flores (A00842650),
  *          Luis Enrique Castillo Carrillo (A00842390),
  *          Desiderio Ivan Ortegon Morton (A00840591),

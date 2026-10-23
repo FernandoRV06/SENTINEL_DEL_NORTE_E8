@@ -1,4 +1,6 @@
-Equipo: Sentinela del Norte (TC2038)
+Equipo 8: Sentinela del Norte
+TC2038 Analisis y Diseno de Algoritmos Avanzados, Grupo 603
+Profesor: Nezih Nieto Gutierrez
 
 Integrante 1: Carlos Emiliano Nava Flores (A00842650)
 Tareas asignadas: MST y TSP (Kruskal, Prim, Held-Karp y vecino mas cercano),

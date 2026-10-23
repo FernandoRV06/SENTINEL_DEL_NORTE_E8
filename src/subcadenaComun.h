@@ -6,6 +6,7 @@
  * prefijos con ordenamiento por conteo, O(n log n)) y el arreglo LCP de
  * Kasai (O(n)); la respuesta es el mayor LCP entre un sufijo de t1 y uno de t2.
  * Alternativa para comparar: programacion dinamica O(n * m) con O(m) memoria.
+ * Equipo: Sentinela del Norte (Equipo 8)
  * Autores: Carlos Emiliano Nava Flores (A00842650),
  *          Luis Enrique Castillo Carrillo (A00842390),
  *          Desiderio Ivan Ortegon Morton (A00840591),
